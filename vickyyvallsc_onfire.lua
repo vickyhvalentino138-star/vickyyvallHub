@@ -1,7 +1,6 @@
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local TweenService = game:GetService("TweenService")
-local CoreGui = game:GetService("CoreGui")
 local Workspace = game:GetService("Workspace")
 local Lighting = game:GetService("Lighting")
 local Stats = game:GetService("Stats")
@@ -12,19 +11,24 @@ local HttpService = game:GetService("HttpService")
 local LocalPlayer = Players.LocalPlayer
 local Camera = Workspace.CurrentCamera
 
-local HubName = "vickyyvallHub_Perfect"
-
--- ЁЯФе BYPASS TINGKAT DEWA: Cari tempat paling aman buat nempel GUI!
+-- 🔥 BYPASS MUTLAK: Cari tempat aman DENGAN PCALL PENUH!
 local TargetGui
 local success, result = pcall(function() return gethui() end)
 if success and result then
     TargetGui = result
 else
-    -- Kalau gethui gagal, otomatis ngumpet di PlayerGui (1000% AMAN)
-    TargetGui = LocalPlayer:WaitForChild("PlayerGui")
+    local cgSuccess, cgResult = pcall(function() return game:GetService("CoreGui") end)
+    if cgSuccess and cgResult then
+        TargetGui = cgResult
+    else
+        TargetGui = LocalPlayer:WaitForChild("PlayerGui")
+    end
 end
 
--- Hapus GUI lama kalo udah ada di TargetGui yang bener
+-- 🔥 KITA TIMPA VARIABEL COREGUI BIAR ESP DLL IKUT JALUR AMAN!
+local CoreGui = TargetGui 
+local HubName = "vickyyvallHub_Perfect"
+
 if TargetGui:FindFirstChild(HubName) then TargetGui[HubName]:Destroy() end
 
 local ScreenGui = Instance.new("ScreenGui")
@@ -32,7 +36,6 @@ ScreenGui.Name = HubName
 ScreenGui.ResetOnSpawn = false
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Global
 ScreenGui.IgnoreGuiInset = true
--- ЁЯФе MASUK JALUR AMAN BOSQU!
 ScreenGui.Parent = TargetGui 
 
 local FontTitle = Enum.Font.GothamBold
