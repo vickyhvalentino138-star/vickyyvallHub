@@ -13,20 +13,33 @@ local LocalPlayer = Players.LocalPlayer
 local Camera = Workspace.CurrentCamera
 
 local HubName = "vickyyvallHub_Perfect"
-if CoreGui:FindFirstChild(HubName) then CoreGui[HubName]:Destroy() end
+
+-- ЁЯФе BYPASS TINGKAT DEWA: Cari tempat paling aman buat nempel GUI!
+local TargetGui
+local success, result = pcall(function() return gethui() end)
+if success and result then
+    TargetGui = result
+else
+    -- Kalau gethui gagal, otomatis ngumpet di PlayerGui (1000% AMAN)
+    TargetGui = LocalPlayer:WaitForChild("PlayerGui")
+end
+
+-- Hapus GUI lama kalo udah ada di TargetGui yang bener
+if TargetGui:FindFirstChild(HubName) then TargetGui[HubName]:Destroy() end
 
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = HubName
 ScreenGui.ResetOnSpawn = false
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Global
 ScreenGui.IgnoreGuiInset = true
-ScreenGui.Parent = CoreGui
+-- ЁЯФе MASUK JALUR AMAN BOSQU!
+ScreenGui.Parent = TargetGui 
 
 local FontTitle = Enum.Font.GothamBold
 local FontMain = Enum.Font.GothamBold
 local FontDesc = Enum.Font.GothamMedium
 local FontESP = Enum.Font.GothamBold
-local FontUniversal = Enum.Font.SourceSansBold -- Penyelamat bahasa kotak-kotak
+local FontUniversal = Enum.Font.SourceSansBold 
 
 local ColorMain = Color3.fromRGB(15, 15, 18)
 local ColorSidebar = Color3.fromRGB(8, 8, 10)
@@ -41,285 +54,285 @@ local ActiveLanguage = "Indonesia (Default)"
 local TranslationElements = {}
 
 local LangDict = {
-    ["Char_Title"] = {ID = "Karakter", EN = "Character", PT = "Personagem", ZH = "角色", ES = "Personaje", AR = "شخصية", FR = "Personnage", RU = "Персонаж", HI = "चरित्र", DE = "Charakter"},
-    ["Vis_Title"] = {ID = "Visual", EN = "Visual", PT = "Visual", ZH = "视觉", ES = "Visual", AR = "بصري", FR = "Visuel", RU = "Визуал", HI = "दृश्य", DE = "Visuell"},
-    ["World_Title"] = {ID = "Dunia", EN = "World", PT = "Mundo", ZH = "世界", ES = "Mundo", AR = "عالم", FR = "Monde", RU = "Мир", HI = "विश्व", DE = "Welt"},
-    ["Sys_Title"] = {ID = "Info & Sistem", EN = "Info & System", PT = "Informação", ZH = "信息与系统", ES = "Información", AR = "النظام", FR = "Info & Système", RU = "Система", HI = "सिस्टम", DE = "Info & System"},
+    ["Char_Title"] = {ID = "Karakter", EN = "Character", PT = "Personagem", ZH = "шзТшЙ▓", ES = "Personaje", AR = "╪┤╪о╪╡┘К╪й", FR = "Personnage", RU = "╨Я╨╡╤А╤Б╨╛╨╜╨░╨╢", HI = "рдЪрд░рд┐рддреНрд░", DE = "Charakter"},
+    ["Vis_Title"] = {ID = "Visual", EN = "Visual", PT = "Visual", ZH = "шзЖшзЙ", ES = "Visual", AR = "╪и╪╡╪▒┘К", FR = "Visuel", RU = "╨Т╨╕╨╖╤Г╨░╨╗", HI = "рджреГрд╢реНрдп", DE = "Visuell"},
+    ["World_Title"] = {ID = "Dunia", EN = "World", PT = "Mundo", ZH = "ф╕ЦчХМ", ES = "Mundo", AR = "╪╣╪з┘Д┘Е", FR = "Monde", RU = "╨Ь╨╕╤А", HI = "рд╡рд┐рд╢реНрд╡", DE = "Welt"},
+    ["Sys_Title"] = {ID = "Info & Sistem", EN = "Info & System", PT = "Informa├з├гo", ZH = "ф┐бцБпф╕Оч│╗ч╗Я", ES = "Informaci├│n", AR = "╪з┘Д┘Ж╪╕╪з┘Е", FR = "Info & Syst├иme", RU = "╨б╨╕╤Б╤В╨╡╨╝╨░", HI = "рд╕рд┐рд╕реНрдЯрдо", DE = "Info & System"},
     
-    ["Reset_T"] = {ID = "Respawn", EN = "Respawn", PT = "Renascer", ZH = "重置", ES = "Reaparecer", AR = "إعادة تعيين", FR = "Réapparaître", RU = "Респавн", HI = "पुनर्जन्म", DE = "Wiederbelebung"},
+    ["Reset_T"] = {ID = "Respawn", EN = "Respawn", PT = "Renascer", ZH = "щЗНч╜о", ES = "Reaparecer", AR = "╪е╪╣╪з╪п╪й ╪к╪╣┘К┘К┘Ж", FR = "R├йappara├оtre", RU = "╨а╨╡╤Б╨┐╨░╨▓╨╜", HI = "рдкреБрдирд░реНрдЬрдиреНрдо", DE = "Wiederbelebung"},
     ["Reset_D"] = {
         ID = "Hancurkan karaktermu untuk hidup kembali di titik awal! Sangat seru dan berguna jika kamu tersesat atau butuh darah penuh seketika.",
         EN = "Destroy your character to respawn at the start! Very fun and useful if you are lost or need full health instantly.",
-        PT = "Destrua seu personagem para renascer no início! Muito divertido e útil se você se perder ou precisar de saúde instantânea.",
-        ZH = "摧毁你的角色并在起点重生！如果你迷路或需要立刻恢复满血，这非常有趣且有用。",
-        ES = "¡Destruye tu personaje para reaparecer al principio! Muy divertido y útil si te pierdes o necesitas salud al instante.",
-        AR = "دمر شخصيتك لتولد من جديد في البداية! ممتع ومفيد جدا إذا ضللت طريقك أو احتجت لصحة كاملة.",
-        FR = "Détruis ton personnage pour réapparaître au début ! Très amusant et utile si tu es perdu ou as besoin de santé.",
-        RU = "Уничтожьте персонажа, чтобы возродиться! Очень весело и полезно, если вы заблудились или нужно полное здоровье.",
-        HI = "शुरुआत में फिर से जन्म लेने के लिए अपने चरित्र को नष्ट करें! यदि आप खो गए हैं तो बहुत मजेदार और उपयोगी है।",
-        DE = "Zerstöre deinen Charakter, um am Start neu zu spawnen! Sehr lustig und nützlich, wenn du dich verirrst."
+        PT = "Destrua seu personagem para renascer no in├нcio! Muito divertido e ├║til se voc├к se perder ou precisar de sa├║de instant├вnea.",
+        ZH = "цСзцпБф╜ачЪДшзТшЙ▓х╣╢хЬиш╡╖чВ╣щЗНчФЯя╝БхжВцЮЬф╜аш┐╖ш╖пцИЦщЬАшжБчлЛхИ╗цБвхдНц╗бшбАя╝Мш┐ЩщЭЮх╕╕цЬЙш╢гф╕ФцЬЙчФиуАВ",
+        ES = "┬бDestruye tu personaje para reaparecer al principio! Muy divertido y ├║til si te pierdes o necesitas salud al instante.",
+        AR = "╪п┘Е╪▒ ╪┤╪о╪╡┘К╪к┘Г ┘Д╪к┘И┘Д╪п ┘Е┘Ж ╪м╪п┘К╪п ┘Б┘К ╪з┘Д╪и╪п╪з┘К╪й! ┘Е┘Е╪к╪╣ ┘И┘Е┘Б┘К╪п ╪м╪п╪з ╪е╪░╪з ╪╢┘Д┘Д╪к ╪╖╪▒┘К┘В┘Г ╪г┘И ╪з╪н╪к╪м╪к ┘Д╪╡╪н╪й ┘Г╪з┘Е┘Д╪й.",
+        FR = "D├йtruis ton personnage pour r├йappara├оtre au d├йbut ! Tr├иs amusant et utile si tu es perdu ou as besoin de sant├й.",
+        RU = "╨г╨╜╨╕╤З╤В╨╛╨╢╤М╤В╨╡ ╨┐╨╡╤А╤Б╨╛╨╜╨░╨╢╨░, ╤З╤В╨╛╨▒╤Л ╨▓╨╛╨╖╤А╨╛╨┤╨╕╤В╤М╤Б╤П! ╨Ю╤З╨╡╨╜╤М ╨▓╨╡╤Б╨╡╨╗╨╛ ╨╕ ╨┐╨╛╨╗╨╡╨╖╨╜╨╛, ╨╡╤Б╨╗╨╕ ╨▓╤Л ╨╖╨░╨▒╨╗╤Г╨┤╨╕╨╗╨╕╤Б╤М ╨╕╨╗╨╕ ╨╜╤Г╨╢╨╜╨╛ ╨┐╨╛╨╗╨╜╨╛╨╡ ╨╖╨┤╨╛╤А╨╛╨▓╤М╨╡.",
+        HI = "рд╢реБрд░реБрдЖрдд рдореЗрдВ рдлрд┐рд░ рд╕реЗ рдЬрдиреНрдо рд▓реЗрдиреЗ рдХреЗ рд▓рд┐рдП рдЕрдкрдиреЗ рдЪрд░рд┐рддреНрд░ рдХреЛ рдирд╖реНрдЯ рдХрд░реЗрдВ! рдпрджрд┐ рдЖрдк рдЦреЛ рдЧрдП рд╣реИрдВ рддреЛ рдмрд╣реБрдд рдордЬреЗрджрд╛рд░ рдФрд░ рдЙрдкрдпреЛрдЧреА рд╣реИред",
+        DE = "Zerst├╢re deinen Charakter, um am Start neu zu spawnen! Sehr lustig und n├╝tzlich, wenn du dich verirrst."
     },
     
-    ["Rejoin_T"] = {ID = "Rejoin", EN = "Rejoin", PT = "Reentrar", ZH = "重新加入", ES = "Reunirse", AR = "إعادة الانضمام", FR = "Rejoindre", RU = "Перезайти", HI = "फिर से जुड़ें", DE = "Erneut beitreten"},
+    ["Rejoin_T"] = {ID = "Rejoin", EN = "Rejoin", PT = "Reentrar", ZH = "щЗНцЦ░хКахЕе", ES = "Reunirse", AR = "╪е╪╣╪з╪п╪й ╪з┘Д╪з┘Ж╪╢┘Е╪з┘Е", FR = "Rejoindre", RU = "╨Я╨╡╤А╨╡╨╖╨░╨╣╤В╨╕", HI = "рдлрд┐рд░ рд╕реЗ рдЬреБрдбрд╝реЗрдВ", DE = "Erneut beitreten"},
     ["Rejoin_D"] = {
         ID = "Keluar sebentar dan masuk lagi ke server yang sama bagaikan kilat! Cocok banget untuk menyegarkan game kamu yang sedang lag.",
         EN = "Leave briefly and rejoin the same server like lightning! Perfect for refreshing your game if it's lagging.",
         PT = "Saia brevemente e volte ao mesmo servidor como um raio! Perfeito para atualizar seu jogo se estiver travando.",
-        ZH = "短暂离开并闪电般重新加入同一个服务器！如果游戏卡顿，这是刷新游戏的完美选择。",
-        ES = "¡Sal brevemente y vuelve al mismo servidor como un rayo! Perfecto para refrescar tu juego si hay lag.",
-        AR = "اخرج لفترة وجيزة وعد إلى نفس الخادم مثل البرق! مثالي لتحديث لعبتك إذا كانت بطيئة.",
-        FR = "Quittez brièvement et rejoignez le même serveur comme l'éclair ! Parfait pour rafraîchir un jeu qui lag.",
-        RU = "Ненадолго выйдите и молниеносно вернитесь на тот же сервер! Идеально для обновления игры при лагах.",
-        HI = "थोड़ी देर के लिए छोड़ें और उसी सर्वर में बिजली की तरह फिर से जुड़ें! गेम ताज़ा करने के लिए एकदम सही है।",
+        ZH = "чЯнцЪВчж╗х╝Ах╣╢щЧкчФ╡шИмщЗНцЦ░хКахЕехРМф╕Аф╕кцЬНхКбхЩия╝БхжВцЮЬц╕╕цИПхНбщб┐я╝Мш┐ЩцШпхИ╖цЦ░ц╕╕цИПчЪДхоМч╛ОщАЙцЛйуАВ",
+        ES = "┬бSal brevemente y vuelve al mismo servidor como un rayo! Perfecto para refrescar tu juego si hay lag.",
+        AR = "╪з╪о╪▒╪м ┘Д┘Б╪к╪▒╪й ┘И╪м┘К╪▓╪й ┘И╪╣╪п ╪е┘Д┘Й ┘Ж┘Б╪│ ╪з┘Д╪о╪з╪п┘Е ┘Е╪л┘Д ╪з┘Д╪и╪▒┘В! ┘Е╪л╪з┘Д┘К ┘Д╪к╪н╪п┘К╪л ┘Д╪╣╪и╪к┘Г ╪е╪░╪з ┘Г╪з┘Ж╪к ╪и╪╖┘К╪ж╪й.",
+        FR = "Quittez bri├иvement et rejoignez le m├кme serveur comme l'├йclair ! Parfait pour rafra├оchir un jeu qui lag.",
+        RU = "╨Э╨╡╨╜╨░╨┤╨╛╨╗╨│╨╛ ╨▓╤Л╨╣╨┤╨╕╤В╨╡ ╨╕ ╨╝╨╛╨╗╨╜╨╕╨╡╨╜╨╛╤Б╨╜╨╛ ╨▓╨╡╤А╨╜╨╕╤В╨╡╤Б╤М ╨╜╨░ ╤В╨╛╤В ╨╢╨╡ ╤Б╨╡╤А╨▓╨╡╤А! ╨Ш╨┤╨╡╨░╨╗╤М╨╜╨╛ ╨┤╨╗╤П ╨╛╨▒╨╜╨╛╨▓╨╗╨╡╨╜╨╕╤П ╨╕╨│╤А╤Л ╨┐╤А╨╕ ╨╗╨░╨│╨░╤Е.",
+        HI = "рдереЛрдбрд╝реА рджреЗрд░ рдХреЗ рд▓рд┐рдП рдЫреЛрдбрд╝реЗрдВ рдФрд░ рдЙрд╕реА рд╕рд░реНрд╡рд░ рдореЗрдВ рдмрд┐рдЬрд▓реА рдХреА рддрд░рд╣ рдлрд┐рд░ рд╕реЗ рдЬреБрдбрд╝реЗрдВ! рдЧреЗрдо рддрд╛рдЬрд╝рд╛ рдХрд░рдиреЗ рдХреЗ рд▓рд┐рдП рдПрдХрджрдо рд╕рд╣реА рд╣реИред",
         DE = "Verlasse das Spiel kurz und trete demselben Server wie ein Blitz wieder bei! Perfekt bei Lags."
     },
     
-    ["Hop_T"] = {ID = "Server Hop", EN = "Server Hop", PT = "Pular Servidor", ZH = "寻找新服务器", ES = "Salto de servidor", AR = "تغيير الخادم", FR = "Saut de serveur", RU = "Смена сервера", HI = "सर्वर बदलें", DE = "Server-Hop"},
+    ["Hop_T"] = {ID = "Server Hop", EN = "Server Hop", PT = "Pular Servidor", ZH = "хп╗цЙ╛цЦ░цЬНхКбхЩи", ES = "Salto de servidor", AR = "╪к╪║┘К┘К╪▒ ╪з┘Д╪о╪з╪п┘Е", FR = "Saut de serveur", RU = "╨б╨╝╨╡╨╜╨░ ╤Б╨╡╤А╨▓╨╡╤А╨░", HI = "рд╕рд░реНрд╡рд░ рдмрджрд▓реЗрдВ", DE = "Server-Hop"},
     ["Hop_D"] = {
         ID = "Jalan-jalan mencari server baru yang lebih seru! Sistem akan otomatis memindahkanmu untuk bertemu teman dan petualangan baru.",
         EN = "Take a trip to find a more exciting new server! The system will automatically move you to meet new friends.",
-        PT = "Faça uma viagem para encontrar um servidor mais emocionante! O sistema moverá você automaticamente.",
-        ZH = "去寻找一个更刺激的新服务器吧！系统会自动将你转移，去结识新朋友和新冒险。",
-        ES = "¡Haz un viaje para encontrar un servidor más emocionante! El sistema te moverá automáticamente para conocer nuevos amigos.",
-        AR = "قم برحلة للعثور على خادم جديد أكثر إثارة! سينقلك النظام تلقائيًا لمقابلة أصدقاء جدد.",
-        FR = "Partez à la recherche d'un nouveau serveur plus excitant ! Le système vous déplacera automatiquement.",
-        RU = "Отправляйтесь на поиски более захватывающего сервера! Система автоматически переместит вас к новым друзьям.",
-        HI = "अधिक रोमांचक सर्वर खोजने के लिए यात्रा करें! सिस्टम स्वचालित रूप से आपको नए दोस्तों से मिलने के लिए ले जाएगा।",
+        PT = "Fa├зa uma viagem para encontrar um servidor mais emocionante! O sistema mover├б voc├к automaticamente.",
+        ZH = "хО╗хп╗цЙ╛ф╕Аф╕кцЫ┤хИ║ц┐АчЪДцЦ░цЬНхКбхЩихРзя╝Бч│╗ч╗Яф╝ЪшЗкхКих░Жф╜аш╜мчз╗я╝МхО╗ч╗УшпЖцЦ░цЬЛхПЛхТМцЦ░хЖТщЩйуАВ",
+        ES = "┬бHaz un viaje para encontrar un servidor m├бs emocionante! El sistema te mover├б autom├бticamente para conocer nuevos amigos.",
+        AR = "┘В┘Е ╪и╪▒╪н┘Д╪й ┘Д┘Д╪╣╪л┘И╪▒ ╪╣┘Д┘Й ╪о╪з╪п┘Е ╪м╪п┘К╪п ╪г┘Г╪л╪▒ ╪е╪л╪з╪▒╪й! ╪│┘К┘Ж┘В┘Д┘Г ╪з┘Д┘Ж╪╕╪з┘Е ╪к┘Д┘В╪з╪ж┘К┘Л╪з ┘Д┘Е┘В╪з╪и┘Д╪й ╪г╪╡╪п┘В╪з╪б ╪м╪п╪п.",
+        FR = "Partez ├а la recherche d'un nouveau serveur plus excitant ! Le syst├иme vous d├йplacera automatiquement.",
+        RU = "╨Ю╤В╨┐╤А╨░╨▓╨╗╤П╨╣╤В╨╡╤Б╤М ╨╜╨░ ╨┐╨╛╨╕╤Б╨║╨╕ ╨▒╨╛╨╗╨╡╨╡ ╨╖╨░╤Е╨▓╨░╤В╤Л╨▓╨░╤О╤Й╨╡╨│╨╛ ╤Б╨╡╤А╨▓╨╡╤А╨░! ╨б╨╕╤Б╤В╨╡╨╝╨░ ╨░╨▓╤В╨╛╨╝╨░╤В╨╕╤З╨╡╤Б╨║╨╕ ╨┐╨╡╤А╨╡╨╝╨╡╤Б╤В╨╕╤В ╨▓╨░╤Б ╨║ ╨╜╨╛╨▓╤Л╨╝ ╨┤╤А╤Г╨╖╤М╤П╨╝.",
+        HI = "рдЕрдзрд┐рдХ рд░реЛрдорд╛рдВрдЪрдХ рд╕рд░реНрд╡рд░ рдЦреЛрдЬрдиреЗ рдХреЗ рд▓рд┐рдП рдпрд╛рддреНрд░рд╛ рдХрд░реЗрдВ! рд╕рд┐рд╕реНрдЯрдо рд╕реНрд╡рдЪрд╛рд▓рд┐рдд рд░реВрдк рд╕реЗ рдЖрдкрдХреЛ рдирдП рджреЛрд╕реНрддреЛрдВ рд╕реЗ рдорд┐рд▓рдиреЗ рдХреЗ рд▓рд┐рдП рд▓реЗ рдЬрд╛рдПрдЧрд╛ред",
         DE = "Mach dich auf die Suche nach einem aufregenderen Server! Das System verschiebt dich automatisch."
     },
     
-    ["Speed_T"] = {ID = "Run Speed", EN = "Run Speed", PT = "Velocidade", ZH = "移动速度", ES = "Velocidad", AR = "السرعة", FR = "Vitesse", RU = "Скорость бега", HI = "गति", DE = "Laufgeschwindigkeit"},
+    ["Speed_T"] = {ID = "Run Speed", EN = "Run Speed", PT = "Velocidade", ZH = "чз╗хКищАЯх║ж", ES = "Velocidad", AR = "╪з┘Д╪│╪▒╪╣╪й", FR = "Vitesse", RU = "╨б╨║╨╛╤А╨╛╤Б╤В╤М ╨▒╨╡╨│╨░", HI = "рдЧрддрд┐", DE = "Laufgeschwindigkeit"},
     ["Speed_D"] = {
         ID = "Berlari secepat pahlawan super! Jelajahi seluruh dunia dengan kecepatan kilat tanpa takut tertinggal oleh teman-temanmu.",
         EN = "Run as fast as a superhero! Explore the whole world at lightning speed without fear of being left behind.",
-        PT = "Corra tão rápido quanto um super-herói! Explore o mundo inteiro na velocidade da luz.",
-        ZH = "像超级英雄一样奔跑！以闪电般的速度探索整个世界，不怕被朋友抛在后面。",
-        ES = "¡Corre tan rápido como un superhéroe! Explora el mundo a la velocidad del rayo sin miedo a quedarte atrás.",
-        AR = "اركض بسرعة بطل خارق! استكشف العالم كله بسرعة البرق دون خوف من التخلف عن الركب.",
-        FR = "Courez aussi vite qu'un super-héros ! Explorez le monde à la vitesse de l'éclair.",
-        RU = "Беги так же быстро, как супергерой! Исследуй весь мир со скоростью молнии.",
-        HI = "एक सुपरहीरो की तरह तेजी से दौड़ें! पीछे छूटने के डर के बिना पूरी दुनिया का अन्वेषण करें।",
+        PT = "Corra t├гo r├бpido quanto um super-her├│i! Explore o mundo inteiro na velocidade da luz.",
+        ZH = "хГПш╢Еч║зшЛ▒щЫДф╕Аца╖хеФш╖Ся╝Бф╗ещЧкчФ╡шИмчЪДщАЯх║жцОвч┤вцХ┤ф╕кф╕ЦчХМя╝Мф╕НцАХшвлцЬЛхПЛцКЫхЬихРОщЭвуАВ",
+        ES = "┬бCorre tan r├бpido como un superh├йroe! Explora el mundo a la velocidad del rayo sin miedo a quedarte atr├бs.",
+        AR = "╪з╪▒┘Г╪╢ ╪и╪│╪▒╪╣╪й ╪и╪╖┘Д ╪о╪з╪▒┘В! ╪з╪│╪к┘Г╪┤┘Б ╪з┘Д╪╣╪з┘Д┘Е ┘Г┘Д┘З ╪и╪│╪▒╪╣╪й ╪з┘Д╪и╪▒┘В ╪п┘И┘Ж ╪о┘И┘Б ┘Е┘Ж ╪з┘Д╪к╪о┘Д┘Б ╪╣┘Ж ╪з┘Д╪▒┘Г╪и.",
+        FR = "Courez aussi vite qu'un super-h├йros ! Explorez le monde ├а la vitesse de l'├йclair.",
+        RU = "╨С╨╡╨│╨╕ ╤В╨░╨║ ╨╢╨╡ ╨▒╤Л╤Б╤В╤А╨╛, ╨║╨░╨║ ╤Б╤Г╨┐╨╡╤А╨│╨╡╤А╨╛╨╣! ╨Ш╤Б╤Б╨╗╨╡╨┤╤Г╨╣ ╨▓╨╡╤Б╤М ╨╝╨╕╤А ╤Б╨╛ ╤Б╨║╨╛╤А╨╛╤Б╤В╤М╤О ╨╝╨╛╨╗╨╜╨╕╨╕.",
+        HI = "рдПрдХ рд╕реБрдкрд░рд╣реАрд░реЛ рдХреА рддрд░рд╣ рддреЗрдЬреА рд╕реЗ рджреМрдбрд╝реЗрдВ! рдкреАрдЫреЗ рдЫреВрдЯрдиреЗ рдХреЗ рдбрд░ рдХреЗ рдмрд┐рдирд╛ рдкреВрд░реА рджреБрдирд┐рдпрд╛ рдХрд╛ рдЕрдиреНрд╡реЗрд╖рдг рдХрд░реЗрдВред",
         DE = "Renne so schnell wie ein Superheld! Erkunde die ganze Welt in Blitzgeschwindigkeit."
     },
     
-    ["Jump_T"] = {ID = "Jump Power", EN = "Jump Power", PT = "Pulo", ZH = "跳跃高度", ES = "Poder de salto", AR = "قوة القفز", FR = "Puissance de saut", RU = "Сила прыжка", HI = "जंप पावर", DE = "Sprungkraft"},
+    ["Jump_T"] = {ID = "Jump Power", EN = "Jump Power", PT = "Pulo", ZH = "ш╖│ш╖ГщлШх║ж", ES = "Poder de salto", AR = "┘В┘И╪й ╪з┘Д┘В┘Б╪▓", FR = "Puissance de saut", RU = "╨б╨╕╨╗╨░ ╨┐╤А╤Л╨╢╨║╨░", HI = "рдЬрдВрдк рдкрд╛рд╡рд░", DE = "Sprungkraft"},
     ["Jump_D"] = {
         ID = "Lompat super tinggi seperti katak ajaib! Lewati gedung dan rintangan besar dengan sangat mudah dan menyenangkan.",
         EN = "Jump super high like a magic frog! Pass huge buildings and obstacles very easily and happily.",
-        PT = "Pule super alto como um sapo mágico! Passe por prédios e obstáculos enormes com muita facilidade.",
-        ZH = "像神奇的青蛙一样跳得超级高！非常轻松愉快地越过巨大的建筑物和障碍物。",
-        ES = "¡Salta súper alto como una rana mágica! Pasa edificios y obstáculos enormes muy fácilmente.",
-        AR = "اقفز عاليا جدا مثل الضفدع السحري! تجاوز المباني والعقبات الضخمة بسهولة شديدة وسعادة.",
-        FR = "Sautez très haut comme une grenouille magique ! Dépassez les grands bâtiments et les obstacles facilement.",
-        RU = "Прыгай супер высоко, как волшебная лягушка! Легко преодолевай огромные здания и препятствия.",
-        HI = "एक जादुई मेंढक की तरह सुपर हाई जंप करें! बड़ी इमारतों और बाधाओं को बहुत आसानी से पार करें।",
-        DE = "Spring super hoch wie ein magischer Frosch! Überwinde riesige Gebäude und Hindernisse ganz einfach."
+        PT = "Pule super alto como um sapo m├бgico! Passe por pr├йdios e obst├бculos enormes com muita facilidade.",
+        ZH = "хГПчеЮхеЗчЪДщЭТшЫЩф╕Аца╖ш╖│х╛Чш╢Еч║зщлШя╝БщЭЮх╕╕ш╜╗цЭ╛цДЙх┐лхЬ░ш╢Кш┐Зх╖ихдзчЪДх╗║чнСчЙйхТМщЪЬчвНчЙйуАВ",
+        ES = "┬бSalta s├║per alto como una rana m├бgica! Pasa edificios y obst├бculos enormes muy f├бcilmente.",
+        AR = "╪з┘В┘Б╪▓ ╪╣╪з┘Д┘К╪з ╪м╪п╪з ┘Е╪л┘Д ╪з┘Д╪╢┘Б╪п╪╣ ╪з┘Д╪│╪н╪▒┘К! ╪к╪м╪з┘И╪▓ ╪з┘Д┘Е╪и╪з┘Ж┘К ┘И╪з┘Д╪╣┘В╪и╪з╪к ╪з┘Д╪╢╪о┘Е╪й ╪и╪│┘З┘И┘Д╪й ╪┤╪п┘К╪п╪й ┘И╪│╪╣╪з╪п╪й.",
+        FR = "Sautez tr├иs haut comme une grenouille magique ! D├йpassez les grands b├вtiments et les obstacles facilement.",
+        RU = "╨Я╤А╤Л╨│╨░╨╣ ╤Б╤Г╨┐╨╡╤А ╨▓╤Л╤Б╨╛╨║╨╛, ╨║╨░╨║ ╨▓╨╛╨╗╤И╨╡╨▒╨╜╨░╤П ╨╗╤П╨│╤Г╤И╨║╨░! ╨Ы╨╡╨│╨║╨╛ ╨┐╤А╨╡╨╛╨┤╨╛╨╗╨╡╨▓╨░╨╣ ╨╛╨│╤А╨╛╨╝╨╜╤Л╨╡ ╨╖╨┤╨░╨╜╨╕╤П ╨╕ ╨┐╤А╨╡╨┐╤П╤В╤Б╤В╨▓╨╕╤П.",
+        HI = "рдПрдХ рдЬрд╛рджреБрдИ рдореЗрдВрдврдХ рдХреА рддрд░рд╣ рд╕реБрдкрд░ рд╣рд╛рдИ рдЬрдВрдк рдХрд░реЗрдВ! рдмрдбрд╝реА рдЗрдорд╛рд░рддреЛрдВ рдФрд░ рдмрд╛рдзрд╛рдУрдВ рдХреЛ рдмрд╣реБрдд рдЖрд╕рд╛рдиреА рд╕реЗ рдкрд╛рд░ рдХрд░реЗрдВред",
+        DE = "Spring super hoch wie ein magischer Frosch! ├Ьberwinde riesige Geb├дude und Hindernisse ganz einfach."
     },
     
-    ["Inf_T"] = {ID = "Inf Jump", EN = "Inf Jump", PT = "Pulo Infinito", ZH = "无限跳跃", ES = "Salto infinito", AR = "قفز غير محدود", FR = "Saut infini", RU = "Бесконечные прыжки", HI = "अनंत जंप", DE = "Unendlicher Sprung"},
+    ["Inf_T"] = {ID = "Inf Jump", EN = "Inf Jump", PT = "Pulo Infinito", ZH = "цЧащЩРш╖│ш╖Г", ES = "Salto infinito", AR = "┘В┘Б╪▓ ╪║┘К╪▒ ┘Е╪н╪п┘И╪п", FR = "Saut infini", RU = "╨С╨╡╤Б╨║╨╛╨╜╨╡╤З╨╜╤Л╨╡ ╨┐╤А╤Л╨╢╨║╨╕", HI = "рдЕрдирдВрдд рдЬрдВрдк", DE = "Unendlicher Sprung"},
     ["Inf_D"] = {
         ID = "Terbang ke angkasa dengan melompat berkali-kali di udara! Rasakan keajaiban melayang tanpa harus menyentuh tanah.",
         EN = "Fly into the sky by jumping multiple times in the air! Feel the magic of floating without touching the ground.",
-        PT = "Voe para o céu pulando várias vezes no ar! Sinta a magia de flutuar sem tocar o chão.",
-        ZH = "在空中多次跳跃飞向天空！感受脚不沾地漂浮的魔力。",
-        ES = "¡Vuela hacia el cielo saltando varias veces en el aire! Siente la magia de flotar sin tocar el suelo.",
-        AR = "طِر إلى السماء بالقفز عدة مرات في الهواء! اشعر بسحر الطفو دون أن تلمس الأرض.",
+        PT = "Voe para o c├йu pulando v├бrias vezes no ar! Sinta a magia de flutuar sem tocar o ch├гo.",
+        ZH = "хЬичй║ф╕нхдЪцмбш╖│ш╖ГщгЮхРСхдйчй║я╝БцДЯхПЧшДЪф╕Нц▓╛хЬ░ц╝Вц╡очЪДщнФхКЫуАВ",
+        ES = "┬бVuela hacia el cielo saltando varias veces en el aire! Siente la magia de flotar sin tocar el suelo.",
+        AR = "╪╖┘Р╪▒ ╪е┘Д┘Й ╪з┘Д╪│┘Е╪з╪б ╪и╪з┘Д┘В┘Б╪▓ ╪╣╪п╪й ┘Е╪▒╪з╪к ┘Б┘К ╪з┘Д┘З┘И╪з╪б! ╪з╪┤╪╣╪▒ ╪и╪│╪н╪▒ ╪з┘Д╪╖┘Б┘И ╪п┘И┘Ж ╪г┘Ж ╪к┘Д┘Е╪│ ╪з┘Д╪г╪▒╪╢.",
         FR = "Volez dans le ciel en sautant plusieurs fois en l'air ! Sentez la magia de flotter sans toucher le sol.",
-        RU = "Лети в небо, прыгая в воздухе несколько раз! Почувствуй магию полета, не касаясь земли.",
-        HI = "हवा में कई बार कूदकर आसमान में उड़ें! जमीन को छुए बिना तैरने के जादू को महसूस करें।",
-        DE = "Fliege in den Himmel, indem du mehrmals in die Luft springst! Spüre die Magie des Schwebens."
+        RU = "╨Ы╨╡╤В╨╕ ╨▓ ╨╜╨╡╨▒╨╛, ╨┐╤А╤Л╨│╨░╤П ╨▓ ╨▓╨╛╨╖╨┤╤Г╤Е╨╡ ╨╜╨╡╤Б╨║╨╛╨╗╤М╨║╨╛ ╤А╨░╨╖! ╨Я╨╛╤З╤Г╨▓╤Б╤В╨▓╤Г╨╣ ╨╝╨░╨│╨╕╤О ╨┐╨╛╨╗╨╡╤В╨░, ╨╜╨╡ ╨║╨░╤Б╨░╤П╤Б╤М ╨╖╨╡╨╝╨╗╨╕.",
+        HI = "рд╣рд╡рд╛ рдореЗрдВ рдХрдИ рдмрд╛рд░ рдХреВрджрдХрд░ рдЖрд╕рдорд╛рди рдореЗрдВ рдЙрдбрд╝реЗрдВ! рдЬрдореАрди рдХреЛ рдЫреБрдП рдмрд┐рдирд╛ рддреИрд░рдиреЗ рдХреЗ рдЬрд╛рджреВ рдХреЛ рдорд╣рд╕реВрд╕ рдХрд░реЗрдВред",
+        DE = "Fliege in den Himmel, indem du mehrmals in die Luft springst! Sp├╝re die Magie des Schwebens."
     },
     
-    ["Noclip_T"] = {ID = "Noclip", EN = "Noclip", PT = "Noclip", ZH = "穿墙", ES = "Atravesar", AR = "اختراق الجدران", FR = "Passe-muraille", RU = "Сквозь стены", HI = "दीवार के पार", DE = "Durch Wände gehen"},
+    ["Noclip_T"] = {ID = "Noclip", EN = "Noclip", PT = "Noclip", ZH = "чй┐хвЩ", ES = "Atravesar", AR = "╪з╪о╪к╪▒╪з┘В ╪з┘Д╪м╪п╪▒╪з┘Ж", FR = "Passe-muraille", RU = "╨б╨║╨▓╨╛╨╖╤М ╤Б╤В╨╡╨╜╤Л", HI = "рджреАрд╡рд╛рд░ рдХреЗ рдкрд╛рд░", DE = "Durch W├дnde gehen"},
     ["Noclip_D"] = {
         ID = "Jadilah hantu sakti yang bisa menembus tembok tebal dan rintangan apapun! Jalan pintas terbaik untuk menjelajahi map.",
         EN = "Become a magic ghost that can pass through thick walls and any obstacles! The best shortcut to explore the map.",
-        PT = "Torne-se um fantasma mágico que pode passar por paredes grossas! O melhor atalho para explorar o mapa.",
-        ZH = "成为一个可以穿透厚墙和任何障碍物的神奇幽灵！探索地图的最佳捷径。",
-        ES = "¡Conviértete en un fantasma mágico que puede atravesar paredes gruesas! El mejor atajo para explorar el mapa.",
-        AR = "كن شبحًا سحريًا يمكنه المرور عبر الجدران السميكة! أفضل طريق مختصر لاستكشاف الخريطة.",
-        FR = "Devenez un fantôme magique qui traverse les murs épais ! Le meilleur raccourci pour explorer la carte.",
-        RU = "Станьте волшебным призраком, проходящим сквозь толстые стены! Лучший короткий путь для исследования карты.",
-        HI = "एक जादुई भूत बनें जो मोटी दीवारों और किसी भी बाधा से गुजर सकता है! नक्शे का पता लगाने का सबसे अच्छा शॉर्टकट।",
-        DE = "Werde zum magischen Geist, der durch dicke Wände gehen kann! Die beste Abkürzung, um die Karte zu erkunden."
+        PT = "Torne-se um fantasma m├бgico que pode passar por paredes grossas! O melhor atalho para explorar o mapa.",
+        ZH = "цИРф╕║ф╕Аф╕кхПпф╗ечй┐щАПхОЪхвЩхТМф╗╗ф╜ХщЪЬчвНчЙйчЪДчеЮхеЗх╣╜чБ╡я╝БцОвч┤вхЬ░хЫ╛чЪДцЬАф╜│цН╖х╛ДуАВ",
+        ES = "┬бConvi├йrtete en un fantasma m├бgico que puede atravesar paredes gruesas! El mejor atajo para explorar el mapa.",
+        AR = "┘Г┘Ж ╪┤╪и╪н┘Л╪з ╪│╪н╪▒┘К┘Л╪з ┘К┘Е┘Г┘Ж┘З ╪з┘Д┘Е╪▒┘И╪▒ ╪╣╪и╪▒ ╪з┘Д╪м╪п╪▒╪з┘Ж ╪з┘Д╪│┘Е┘К┘Г╪й! ╪г┘Б╪╢┘Д ╪╖╪▒┘К┘В ┘Е╪о╪к╪╡╪▒ ┘Д╪з╪│╪к┘Г╪┤╪з┘Б ╪з┘Д╪о╪▒┘К╪╖╪й.",
+        FR = "Devenez un fant├┤me magique qui traverse les murs ├йpais ! Le meilleur raccourci pour explorer la carte.",
+        RU = "╨б╤В╨░╨╜╤М╤В╨╡ ╨▓╨╛╨╗╤И╨╡╨▒╨╜╤Л╨╝ ╨┐╤А╨╕╨╖╤А╨░╨║╨╛╨╝, ╨┐╤А╨╛╤Е╨╛╨┤╤П╤Й╨╕╨╝ ╤Б╨║╨▓╨╛╨╖╤М ╤В╨╛╨╗╤Б╤В╤Л╨╡ ╤Б╤В╨╡╨╜╤Л! ╨Ы╤Г╤З╤И╨╕╨╣ ╨║╨╛╤А╨╛╤В╨║╨╕╨╣ ╨┐╤Г╤В╤М ╨┤╨╗╤П ╨╕╤Б╤Б╨╗╨╡╨┤╨╛╨▓╨░╨╜╨╕╤П ╨║╨░╤А╤В╤Л.",
+        HI = "рдПрдХ рдЬрд╛рджреБрдИ рднреВрдд рдмрдиреЗрдВ рдЬреЛ рдореЛрдЯреА рджреАрд╡рд╛рд░реЛрдВ рдФрд░ рдХрд┐рд╕реА рднреА рдмрд╛рдзрд╛ рд╕реЗ рдЧреБрдЬрд░ рд╕рдХрддрд╛ рд╣реИ! рдирдХреНрд╢реЗ рдХрд╛ рдкрддрд╛ рд▓рдЧрд╛рдиреЗ рдХрд╛ рд╕рдмрд╕реЗ рдЕрдЪреНрдЫрд╛ рд╢реЙрд░реНрдЯрдХрдЯред",
+        DE = "Werde zum magischen Geist, der durch dicke W├дnde gehen kann! Die beste Abk├╝rzung, um die Karte zu erkunden."
     },
     
-    ["Fly_T"] = {ID = "Fly Mode", EN = "Fly Mode", PT = "Voar", ZH = "飞行模式", ES = "Volar", AR = "طيران", FR = "Voler", RU = "Полет", HI = "उड़ना", DE = "Fliegen"},
+    ["Fly_T"] = {ID = "Fly Mode", EN = "Fly Mode", PT = "Voar", ZH = "щгЮшбМцибх╝П", ES = "Volar", AR = "╪╖┘К╪▒╪з┘Ж", FR = "Voler", RU = "╨Я╨╛╨╗╨╡╤В", HI = "рдЙрдбрд╝рдирд╛", DE = "Fliegen"},
     ["Fly_D"] = {
         ID = "Terbang bebas seperti burung di langit! Bebas arahkan kameramu dan lihat indahnya seluruh dunia dari atas awan.",
         EN = "Fly freely like a bird in the sky! Point your camera freely and see the beauty of the world from above the clouds.",
-        PT = "Voe livremente como um pássaro no céu! Aponte sua câmera e veja a beleza do mundo de cima.",
-        ZH = "像天空中的鸟儿一样自由飞翔！自由转动你的相机，从云端俯瞰世界的美丽。",
-        ES = "¡Vuela libremente como un pájaro en el cielo! Apunta tu cámara y mira la belleza del mundo desde arriba.",
-        AR = "طر بحرية مثل طائر في السماء! وجه الكاميرا بحرية وشاهد جمال العالم من فوق السحاب.",
-        FR = "Volez librement comme un oiseau dans le ciel ! Pointez votre caméra et admirez la beauté du monde.",
-        RU = "Летай свободно, как птица в небе! Направляй камеру и смотри на красоту мира из-за облаков.",
-        HI = "आसमान में एक पक्षी की तरह स्वतंत्र रूप से उड़ें! अपने कैमरे को घुमाएं और बादलों के ऊपर से दुनिया की सुंदरता देखें।",
-        DE = "Fliege frei wie ein Vogel im Himmel! Richte deine Kamera aus und sieh dir die Schönheit der Welt von oben an."
+        PT = "Voe livremente como um p├бssaro no c├йu! Aponte sua c├вmera e veja a beleza do mundo de cima.",
+        ZH = "хГПхдйчй║ф╕нчЪДщ╕ЯхД┐ф╕Аца╖шЗкчФ▒щгЮч┐Фя╝БшЗкчФ▒ш╜мхКиф╜ачЪДчЫ╕цЬ║я╝Мф╗Оф║Счлпф┐пчЮ░ф╕ЦчХМчЪДч╛Оф╕╜уАВ",
+        ES = "┬бVuela libremente como un p├бjaro en el cielo! Apunta tu c├бmara y mira la belleza del mundo desde arriba.",
+        AR = "╪╖╪▒ ╪и╪н╪▒┘К╪й ┘Е╪л┘Д ╪╖╪з╪ж╪▒ ┘Б┘К ╪з┘Д╪│┘Е╪з╪б! ┘И╪м┘З ╪з┘Д┘Г╪з┘Е┘К╪▒╪з ╪и╪н╪▒┘К╪й ┘И╪┤╪з┘З╪п ╪м┘Е╪з┘Д ╪з┘Д╪╣╪з┘Д┘Е ┘Е┘Ж ┘Б┘И┘В ╪з┘Д╪│╪н╪з╪и.",
+        FR = "Volez librement comme un oiseau dans le ciel ! Pointez votre cam├йra et admirez la beaut├й du monde.",
+        RU = "╨Ы╨╡╤В╨░╨╣ ╤Б╨▓╨╛╨▒╨╛╨┤╨╜╨╛, ╨║╨░╨║ ╨┐╤В╨╕╤Ж╨░ ╨▓ ╨╜╨╡╨▒╨╡! ╨Э╨░╨┐╤А╨░╨▓╨╗╤П╨╣ ╨║╨░╨╝╨╡╤А╤Г ╨╕ ╤Б╨╝╨╛╤В╤А╨╕ ╨╜╨░ ╨║╤А╨░╤Б╨╛╤В╤Г ╨╝╨╕╤А╨░ ╨╕╨╖-╨╖╨░ ╨╛╨▒╨╗╨░╨║╨╛╨▓.",
+        HI = "рдЖрд╕рдорд╛рди рдореЗрдВ рдПрдХ рдкрдХреНрд╖реА рдХреА рддрд░рд╣ рд╕реНрд╡рддрдВрддреНрд░ рд░реВрдк рд╕реЗ рдЙрдбрд╝реЗрдВ! рдЕрдкрдиреЗ рдХреИрдорд░реЗ рдХреЛ рдШреБрдорд╛рдПрдВ рдФрд░ рдмрд╛рджрд▓реЛрдВ рдХреЗ рдКрдкрд░ рд╕реЗ рджреБрдирд┐рдпрд╛ рдХреА рд╕реБрдВрджрд░рддрд╛ рджреЗрдЦреЗрдВред",
+        DE = "Fliege frei wie ein Vogel im Himmel! Richte deine Kamera aus und sieh dir die Sch├╢nheit der Welt von oben an."
     },
     
-    ["ESP_T"] = {ID = "Name ESP", EN = "Name ESP", PT = "ESP Nome", ZH = "名字 ESP", ES = "ESP Nombre", AR = "كاشف الأسماء", FR = "Nom ESP", RU = "ВХ Имена", HI = "नाम ESP", DE = "Name ESP"},
+    ["ESP_T"] = {ID = "Name ESP", EN = "Name ESP", PT = "ESP Nome", ZH = "хРНхнЧ ESP", ES = "ESP Nombre", AR = "┘Г╪з╪┤┘Б ╪з┘Д╪г╪│┘Е╪з╪б", FR = "Nom ESP", RU = "╨Т╨е ╨Ш╨╝╨╡╨╜╨░", HI = "рдирд╛рдо ESP", DE = "Name ESP"},
     ["ESP_D"] = {
         ID = "Mata-mata super! Lihat nama dan jarak semua pemain dari jauh, bahkan kalau mereka sedang ngumpet di balik dinding.",
         EN = "Super spy! See the names and distances of all players from afar, even if they are hiding behind walls.",
-        PT = "Super espião! Veja os nomes e distâncias de todos os jogadores, mesmo se eles estiverem escondidos.",
-        ZH = "超级间谍！从远处看到所有玩家的名字和距离，即使他们躲在墙后。",
-        ES = "¡Súper espía! Mira los nombres y las distancias de todos los jugadores desde lejos, incluso si se esconden.",
-        AR = "جاسوس خارق! شاهد أسماء ومسافات جميع اللاعبين من بعيد، حتى لو كانوا يختبئون خلف الجدران.",
-        FR = "Super espion ! Voyez les noms et les distances de tous les joueurs de loin, même s'ils se cachent.",
-        RU = "Супершпион! Смотри имена и расстояния всех игроков издалека, даже если они прячутся за стенами.",
-        HI = "सुपर जासूस! दूर से सभी खिलाड़ियों के नाम और दूरियां देखें, भले ही वे दीवारों के पीछे छिपे हों।",
+        PT = "Super espi├гo! Veja os nomes e dist├вncias de todos os jogadores, mesmo se eles estiverem escondidos.",
+        ZH = "ш╢Еч║зщЧ┤ш░Ня╝Бф╗Ош┐ЬхдДчЬЛхИ░цЙАцЬЙчОйхо╢чЪДхРНхнЧхТМш╖Эчж╗я╝МхН│ф╜┐ф╗Цф╗мш║▓хЬихвЩхРОуАВ",
+        ES = "┬бS├║per esp├нa! Mira los nombres y las distancias de todos los jugadores desde lejos, incluso si se esconden.",
+        AR = "╪м╪з╪│┘И╪│ ╪о╪з╪▒┘В! ╪┤╪з┘З╪п ╪г╪│┘Е╪з╪б ┘И┘Е╪│╪з┘Б╪з╪к ╪м┘Е┘К╪╣ ╪з┘Д┘Д╪з╪╣╪и┘К┘Ж ┘Е┘Ж ╪и╪╣┘К╪п╪М ╪н╪к┘Й ┘Д┘И ┘Г╪з┘Ж┘И╪з ┘К╪о╪к╪и╪ж┘И┘Ж ╪о┘Д┘Б ╪з┘Д╪м╪п╪▒╪з┘Ж.",
+        FR = "Super espion ! Voyez les noms et les distances de tous les joueurs de loin, m├кme s'ils se cachent.",
+        RU = "╨б╤Г╨┐╨╡╤А╤И╨┐╨╕╨╛╨╜! ╨б╨╝╨╛╤В╤А╨╕ ╨╕╨╝╨╡╨╜╨░ ╨╕ ╤А╨░╤Б╤Б╤В╨╛╤П╨╜╨╕╤П ╨▓╤Б╨╡╤Е ╨╕╨│╤А╨╛╨║╨╛╨▓ ╨╕╨╖╨┤╨░╨╗╨╡╨║╨░, ╨┤╨░╨╢╨╡ ╨╡╤Б╨╗╨╕ ╨╛╨╜╨╕ ╨┐╤А╤П╤З╤Г╤В╤Б╤П ╨╖╨░ ╤Б╤В╨╡╨╜╨░╨╝╨╕.",
+        HI = "рд╕реБрдкрд░ рдЬрд╛рд╕реВрд╕! рджреВрд░ рд╕реЗ рд╕рднреА рдЦрд┐рд▓рд╛рдбрд╝рд┐рдпреЛрдВ рдХреЗ рдирд╛рдо рдФрд░ рджреВрд░рд┐рдпрд╛рдВ рджреЗрдЦреЗрдВ, рднрд▓реЗ рд╣реА рд╡реЗ рджреАрд╡рд╛рд░реЛрдВ рдХреЗ рдкреАрдЫреЗ рдЫрд┐рдкреЗ рд╣реЛрдВред",
         DE = "Superspion! Sieh die Namen und Entfernungen aller Spieler von weitem, selbst wenn sie sich verstecken."
     },
     
-    ["HP_T"] = {ID = "Health ESP", EN = "Health ESP", PT = "ESP Vida", ZH = "血量 ESP", ES = "ESP Salud", AR = "كاشف الصحة", FR = "Santé ESP", RU = "ВХ Здоровье", HI = "स्वास्थ्य ESP", DE = "Gesundheit ESP"},
+    ["HP_T"] = {ID = "Health ESP", EN = "Health ESP", PT = "ESP Vida", ZH = "шбАщЗП ESP", ES = "ESP Salud", AR = "┘Г╪з╪┤┘Б ╪з┘Д╪╡╪н╪й", FR = "Sant├й ESP", RU = "╨Т╨е ╨Ч╨┤╨╛╤А╨╛╨▓╤М╨╡", HI = "рд╕реНрд╡рд╛рд╕реНрдереНрдп ESP", DE = "Gesundheit ESP"},
     ["HP_D"] = {
         ID = "Kacamata medis canggih! Ketahui sisa darah musuhmu dengan cepat. Sangat berguna untuk tahu siapa yang harus dikejar.",
         EN = "Advanced medical glasses! Know your enemy's remaining health quickly. Very useful to know who to chase.",
-        PT = "Óculos médicos avançados! Saiba a saúde restante do seu inimigo rapidamente. Muito útil para saber quem perseguir.",
-        ZH = "高级医疗眼镜！快速了解敌人的剩余生命值。非常有用，知道该追谁。",
-        ES = "¡Gafas médicas avanzadas! Conoce la salud restante de tu enemigo rápidamente. Muy útil para saber a quién perseguir.",
-        AR = "نظارات طبية متقدمة! تعرف على صحة عدوك المتبقية بسرعة. مفيد جدا لمعرفة من يجب مطاردته.",
-        FR = "Lunettes médicales avancées ! Connaissez rapidement la santé restante de vos ennemis. Très utile.",
-        RU = "Передовые медицинские очки! Быстро узнай оставшееся здоровье врага. Очень полезно знать, за кем гнаться.",
-        HI = "उन्नत चिकित्सा चश्मा! अपने दुश्मन के शेष स्वास्थ्य को जल्दी से जानें। यह जानना बहुत उपयोगी है कि किसका पीछा करना है।",
-        DE = "Erweiterte medizinische Brille! Erkenne schnell die verbleibende Gesundheit deines Feindes. Sehr nützlich."
+        PT = "├Уculos m├йdicos avan├зados! Saiba a sa├║de restante do seu inimigo rapidamente. Muito ├║til para saber quem perseguir.",
+        ZH = "щлШч║зхМ╗чЦЧчЬ╝щХЬя╝Бх┐лщАЯф║ЖшзгцХМф║║чЪДхЙйф╜ЩчФЯхС╜хА╝уАВщЭЮх╕╕цЬЙчФия╝МчЯещБУшпеш┐╜ш░БуАВ",
+        ES = "┬бGafas m├йdicas avanzadas! Conoce la salud restante de tu enemigo r├бpidamente. Muy ├║til para saber a qui├йn perseguir.",
+        AR = "┘Ж╪╕╪з╪▒╪з╪к ╪╖╪и┘К╪й ┘Е╪к┘В╪п┘Е╪й! ╪к╪╣╪▒┘Б ╪╣┘Д┘Й ╪╡╪н╪й ╪╣╪п┘И┘Г ╪з┘Д┘Е╪к╪и┘В┘К╪й ╪и╪│╪▒╪╣╪й. ┘Е┘Б┘К╪п ╪м╪п╪з ┘Д┘Е╪╣╪▒┘Б╪й ┘Е┘Ж ┘К╪м╪и ┘Е╪╖╪з╪▒╪п╪к┘З.",
+        FR = "Lunettes m├йdicales avanc├йes ! Connaissez rapidement la sant├й restante de vos ennemis. Tr├иs utile.",
+        RU = "╨Я╨╡╤А╨╡╨┤╨╛╨▓╤Л╨╡ ╨╝╨╡╨┤╨╕╤Ж╨╕╨╜╤Б╨║╨╕╨╡ ╨╛╤З╨║╨╕! ╨С╤Л╤Б╤В╤А╨╛ ╤Г╨╖╨╜╨░╨╣ ╨╛╤Б╤В╨░╨▓╤И╨╡╨╡╤Б╤П ╨╖╨┤╨╛╤А╨╛╨▓╤М╨╡ ╨▓╤А╨░╨│╨░. ╨Ю╤З╨╡╨╜╤М ╨┐╨╛╨╗╨╡╨╖╨╜╨╛ ╨╖╨╜╨░╤В╤М, ╨╖╨░ ╨║╨╡╨╝ ╨│╨╜╨░╤В╤М╤Б╤П.",
+        HI = "рдЙрдиреНрдирдд рдЪрд┐рдХрд┐рддреНрд╕рд╛ рдЪрд╢реНрдорд╛! рдЕрдкрдиреЗ рджреБрд╢реНрдорди рдХреЗ рд╢реЗрд╖ рд╕реНрд╡рд╛рд╕реНрдереНрдп рдХреЛ рдЬрд▓реНрджреА рд╕реЗ рдЬрд╛рдиреЗрдВред рдпрд╣ рдЬрд╛рдирдирд╛ рдмрд╣реБрдд рдЙрдкрдпреЛрдЧреА рд╣реИ рдХрд┐ рдХрд┐рд╕рдХрд╛ рдкреАрдЫрд╛ рдХрд░рдирд╛ рд╣реИред",
+        DE = "Erweiterte medizinische Brille! Erkenne schnell die verbleibende Gesundheit deines Feindes. Sehr n├╝tzlich."
     },
     
-    ["Box_T"] = {ID = "Box ESP", EN = "Box ESP", PT = "ESP Caixa", ZH = "方框 ESP", ES = "ESP Caja", AR = "كاشف الصناديق", FR = "Boîte ESP", RU = "ВХ Боксы", HI = "बॉक्स ESP", DE = "Box ESP"},
+    ["Box_T"] = {ID = "Box ESP", EN = "Box ESP", PT = "ESP Caixa", ZH = "цЦ╣цбЖ ESP", ES = "ESP Caja", AR = "┘Г╪з╪┤┘Б ╪з┘Д╪╡┘Ж╪з╪п┘К┘В", FR = "Bo├оte ESP", RU = "╨Т╨е ╨С╨╛╨║╤Б╤Л", HI = "рдмреЙрдХреНрд╕ ESP", DE = "Box ESP"},
     ["Box_D"] = {
         ID = "Kurung musuh dalam kotak cahaya ajaib! Kamu tidak akan pernah kehilangan jejak mereka meski dari jarak jauh sekalipun.",
         EN = "Enclose enemies in a magic light box! You will never lose track of them even from a very long distance.",
-        PT = "Cerque inimigos em uma caixa de luz mágica! Você nunca os perderá de vista, mesmo de longe.",
-        ZH = "将敌人关在神奇的灯箱中！即使在很远的距离，你也永远不会失去他们的踪迹。",
-        ES = "¡Enierra a los enemigos en una caja de luz mágica! Nunca les perderás el rastro, incluso desde muy lejos.",
-        AR = "قم بحبس الأعداء في صندوق إضاءة سحري! لن تفقد أثرهم أبدا حتى من مسافة بعيدة جدا.",
-        FR = "Enfermez les ennemis dans une boîte lumineuse magique ! Vous ne perdrez jamais leur trace.",
-        RU = "Помести врагов в волшебную световую коробку! Ты никогда не потеряешь их из виду даже издалека.",
-        HI = "दुश्मनों को एक जादुई प्रकाश बॉक्स में बंद करें! आप कभी भी उनका ट्रैक नहीं खोएंगे, यहां तक कि बहुत दूर से भी।",
-        DE = "Sperre Feinde in eine magische Lichtbox ein! Du wirst sie auch aus großer Entfernung nie aus den Augen verlieren."
+        PT = "Cerque inimigos em uma caixa de luz m├бgica! Voc├к nunca os perder├б de vista, mesmo de longe.",
+        ZH = "х░ЖцХМф║║хЕ│хЬичеЮхеЗчЪДчБпчо▒ф╕ня╝БхН│ф╜┐хЬих╛Иш┐ЬчЪДш╖Эчж╗я╝Мф╜аф╣Яц░╕ш┐Ьф╕Нф╝Ъхд▒хО╗ф╗Цф╗мчЪДш╕кш┐╣уАВ",
+        ES = "┬бEnierra a los enemigos en una caja de luz m├бgica! Nunca les perder├бs el rastro, incluso desde muy lejos.",
+        AR = "┘В┘Е ╪и╪н╪и╪│ ╪з┘Д╪г╪╣╪п╪з╪б ┘Б┘К ╪╡┘Ж╪п┘И┘В ╪е╪╢╪з╪б╪й ╪│╪н╪▒┘К! ┘Д┘Ж ╪к┘Б┘В╪п ╪г╪л╪▒┘З┘Е ╪г╪и╪п╪з ╪н╪к┘Й ┘Е┘Ж ┘Е╪│╪з┘Б╪й ╪и╪╣┘К╪п╪й ╪м╪п╪з.",
+        FR = "Enfermez les ennemis dans une bo├оte lumineuse magique ! Vous ne perdrez jamais leur trace.",
+        RU = "╨Я╨╛╨╝╨╡╤Б╤В╨╕ ╨▓╤А╨░╨│╨╛╨▓ ╨▓ ╨▓╨╛╨╗╤И╨╡╨▒╨╜╤Г╤О ╤Б╨▓╨╡╤В╨╛╨▓╤Г╤О ╨║╨╛╤А╨╛╨▒╨║╤Г! ╨в╤Л ╨╜╨╕╨║╨╛╨│╨┤╨░ ╨╜╨╡ ╨┐╨╛╤В╨╡╤А╤П╨╡╤И╤М ╨╕╤Е ╨╕╨╖ ╨▓╨╕╨┤╤Г ╨┤╨░╨╢╨╡ ╨╕╨╖╨┤╨░╨╗╨╡╨║╨░.",
+        HI = "рджреБрд╢реНрдордиреЛрдВ рдХреЛ рдПрдХ рдЬрд╛рджреБрдИ рдкреНрд░рдХрд╛рд╢ рдмреЙрдХреНрд╕ рдореЗрдВ рдмрдВрдж рдХрд░реЗрдВ! рдЖрдк рдХрднреА рднреА рдЙрдирдХрд╛ рдЯреНрд░реИрдХ рдирд╣реАрдВ рдЦреЛрдПрдВрдЧреЗ, рдпрд╣рд╛рдВ рддрдХ рдХрд┐ рдмрд╣реБрдд рджреВрд░ рд╕реЗ рднреАред",
+        DE = "Sperre Feinde in eine magische Lichtbox ein! Du wirst sie auch aus gro├Яer Entfernung nie aus den Augen verlieren."
     },
 
-    ["Map_NotFound"] = {ID = "Tidak Ditemukan", EN = "Not Found", PT = "Não Encontrado", ZH = "未找到", ES = "No Encontrado", AR = "غير موجود", FR = "Introuvable", RU = "Не найдено", HI = "नहीं मिला", DE = "Nicht gefunden"},        
+    ["Map_NotFound"] = {ID = "Tidak Ditemukan", EN = "Not Found", PT = "N├гo Encontrado", ZH = "цЬкцЙ╛хИ░", ES = "No Encontrado", AR = "╪║┘К╪▒ ┘Е┘И╪м┘И╪п", FR = "Introuvable", RU = "╨Э╨╡ ╨╜╨░╨╣╨┤╨╡╨╜╨╛", HI = "рдирд╣реАрдВ рдорд┐рд▓рд╛", DE = "Nicht gefunden"},        
     
-    ["Day_T"] = {ID = "Daylight", EN = "Daylight", PT = "Dia", ZH = "白昼模式", ES = "Día", AR = "نهار دائم", FR = "Jour", RU = "Вечный день", HI = "दिन का समय", DE = "Tageslicht"},
+    ["Day_T"] = {ID = "Daylight", EN = "Daylight", PT = "Dia", ZH = "чЩ╜цШ╝цибх╝П", ES = "D├нa", AR = "┘Ж┘З╪з╪▒ ╪п╪з╪ж┘Е", FR = "Jour", RU = "╨Т╨╡╤З╨╜╤Л╨╣ ╨┤╨╡╨╜╤М", HI = "рджрд┐рди рдХрд╛ рд╕рдордп", DE = "Tageslicht"},
     ["Day_D"] = {
         ID = "Sulap malam yang gelap gulita menjadi siang yang cerah abadi! Main jadi lebih asyik karena kamu bisa melihat semuanya.",
         EN = "Turn the pitch-black night into an eternal bright day! Playing is more fun because you can see everything.",
-        PT = "Transforme a noite escura em um dia claro e eterno! Brincar é mais divertido porque você pode ver tudo.",
-        ZH = "将漆黑的夜晚变成永恒的明亮白天！游戏更有趣，因为你可以看到一切。",
-        ES = "¡Convierte la noche oscura en un día brillante y eterno! Jugar es más divertido porque puedes ver todo.",
-        AR = "حول الليل المظلم إلى نهار مشرق أبدي! اللعب أكثر متعة لأنك تستطيع رؤية كل شيء.",
-        FR = "Transformez la nuit noire en un jour éternellement lumineux ! Jouer est plus amusant car vous voyez tout.",
-        RU = "Преврати кромешную ночь в вечный яркий день! Играть веселее, потому что ты все видишь.",
-        HI = "घनी अंधेरी रात को एक अनन्त उज्ज्वल दिन में बदल दें! खेलना अधिक मजेदार है क्योंकि आप सब कुछ देख सकते हैं।",
-        DE = "Verwandle die pechschwarze Nacht in einen ewigen, hellen Tag! Das Spielen macht mehr Spaß."
+        PT = "Transforme a noite escura em um dia claro e eterno! Brincar ├й mais divertido porque voc├к pode ver tudo.",
+        ZH = "х░Жц╝Жщ╗СчЪДхдЬцЩЪхПШцИРц░╕цБТчЪДцШОф║очЩ╜хдйя╝Бц╕╕цИПцЫ┤цЬЙш╢гя╝МхЫаф╕║ф╜ахПпф╗ечЬЛхИ░ф╕АхИЗуАВ",
+        ES = "┬бConvierte la noche oscura en un d├нa brillante y eterno! Jugar es m├бs divertido porque puedes ver todo.",
+        AR = "╪н┘И┘Д ╪з┘Д┘Д┘К┘Д ╪з┘Д┘Е╪╕┘Д┘Е ╪е┘Д┘Й ┘Ж┘З╪з╪▒ ┘Е╪┤╪▒┘В ╪г╪и╪п┘К! ╪з┘Д┘Д╪╣╪и ╪г┘Г╪л╪▒ ┘Е╪к╪╣╪й ┘Д╪г┘Ж┘Г ╪к╪│╪к╪╖┘К╪╣ ╪▒╪д┘К╪й ┘Г┘Д ╪┤┘К╪б.",
+        FR = "Transformez la nuit noire en un jour ├йternellement lumineux ! Jouer est plus amusant car vous voyez tout.",
+        RU = "╨Я╤А╨╡╨▓╤А╨░╤В╨╕ ╨║╤А╨╛╨╝╨╡╤И╨╜╤Г╤О ╨╜╨╛╤З╤М ╨▓ ╨▓╨╡╤З╨╜╤Л╨╣ ╤П╤А╨║╨╕╨╣ ╨┤╨╡╨╜╤М! ╨Ш╨│╤А╨░╤В╤М ╨▓╨╡╤Б╨╡╨╗╨╡╨╡, ╨┐╨╛╤В╨╛╨╝╤Г ╤З╤В╨╛ ╤В╤Л ╨▓╤Б╨╡ ╨▓╨╕╨┤╨╕╤И╤М.",
+        HI = "рдШрдиреА рдЕрдВрдзреЗрд░реА рд░рд╛рдд рдХреЛ рдПрдХ рдЕрдирдиреНрдд рдЙрдЬреНрдЬреНрд╡рд▓ рджрд┐рди рдореЗрдВ рдмрджрд▓ рджреЗрдВ! рдЦреЗрд▓рдирд╛ рдЕрдзрд┐рдХ рдордЬреЗрджрд╛рд░ рд╣реИ рдХреНрдпреЛрдВрдХрд┐ рдЖрдк рд╕рдм рдХреБрдЫ рджреЗрдЦ рд╕рдХрддреЗ рд╣реИрдВред",
+        DE = "Verwandle die pechschwarze Nacht in einen ewigen, hellen Tag! Das Spielen macht mehr Spa├Я."
     },
     
-    ["Glow_T"] = {ID = "Fullbright", EN = "Fullbright", PT = "Brilho Total", ZH = "全亮模式", ES = "Brillo Total", AR = "سطوع كامل", FR = "Luminosité", RU = "Яркость", HI = "फुलब्राइट", DE = "Volle Helligkeit"},
+    ["Glow_T"] = {ID = "Fullbright", EN = "Fullbright", PT = "Brilho Total", ZH = "хЕиф║оцибх╝П", ES = "Brillo Total", AR = "╪│╪╖┘И╪╣ ┘Г╪з┘Е┘Д", FR = "Luminosit├й", RU = "╨п╤А╨║╨╛╤Б╤В╤М", HI = "рдлреБрд▓рдмреНрд░рд╛рдЗрдЯ", DE = "Volle Helligkeit"},
     ["Glow_D"] = {
         ID = "Nyalakan lampu ke seluruh penjuru dunia! Hapus semua bayangan seram agar setiap gua dan ruangan jadi terang benderang.",
         EN = "Turn on the lights all over the world! Remove all scary shadows so every cave and room becomes bright.",
         PT = "Acenda as luzes de todo o mundo! Remova todas as sombras assustadoras para que cada caverna fique iluminada.",
-        ZH = "打开全世界的灯！消除所有可怕的阴影，让每个洞穴和房间都变得明亮。",
-        ES = "¡Enciende las luces en todo el mundo! Elimina las sombras aterradoras para que cada cueva y habitación brille.",
-        AR = "شغل الأضواء في جميع أنحاء العالم! قم بإزالة جميع الظلال المخيفة حتى يصبح كل كهف وغرفة مشرقا.",
-        FR = "Allumez les lumières partout ! Supprimez toutes les ombres effrayantes pour que chaque grotte soit lumineuse.",
-        RU = "Включи свет по всему миру! Убери все страшные тени, чтобы каждая пещера и комната стали светлыми.",
-        HI = "पूरी दुनिया में रोशनी चालू करें! सभी डरावनी परछाइयों को हटा दें ताकि हर गुफा और कमरा उज्ज्वल हो जाए।",
-        DE = "Schalte die Lichter auf der ganzen Welt ein! Entferne alle gruseligen Schatten, damit jede Höhle hell wird."
+        ZH = "цЙУх╝АхЕиф╕ЦчХМчЪДчБпя╝Бц╢ИщЩдцЙАцЬЙхПпцАХчЪДщШ┤х╜▒я╝МшойцпПф╕кц┤Ючй┤хТМцИ┐щЧ┤щГ╜хПШх╛ЧцШОф║оуАВ",
+        ES = "┬бEnciende las luces en todo el mundo! Elimina las sombras aterradoras para que cada cueva y habitaci├│n brille.",
+        AR = "╪┤╪║┘Д ╪з┘Д╪г╪╢┘И╪з╪б ┘Б┘К ╪м┘Е┘К╪╣ ╪г┘Ж╪н╪з╪б ╪з┘Д╪╣╪з┘Д┘Е! ┘В┘Е ╪и╪е╪▓╪з┘Д╪й ╪м┘Е┘К╪╣ ╪з┘Д╪╕┘Д╪з┘Д ╪з┘Д┘Е╪о┘К┘Б╪й ╪н╪к┘Й ┘К╪╡╪и╪н ┘Г┘Д ┘Г┘З┘Б ┘И╪║╪▒┘Б╪й ┘Е╪┤╪▒┘В╪з.",
+        FR = "Allumez les lumi├иres partout ! Supprimez toutes les ombres effrayantes pour que chaque grotte soit lumineuse.",
+        RU = "╨Т╨║╨╗╤О╤З╨╕ ╤Б╨▓╨╡╤В ╨┐╨╛ ╨▓╤Б╨╡╨╝╤Г ╨╝╨╕╤А╤Г! ╨г╨▒╨╡╤А╨╕ ╨▓╤Б╨╡ ╤Б╤В╤А╨░╤И╨╜╤Л╨╡ ╤В╨╡╨╜╨╕, ╤З╤В╨╛╨▒╤Л ╨║╨░╨╢╨┤╨░╤П ╨┐╨╡╤Й╨╡╤А╨░ ╨╕ ╨║╨╛╨╝╨╜╨░╤В╨░ ╤Б╤В╨░╨╗╨╕ ╤Б╨▓╨╡╤В╨╗╤Л╨╝╨╕.",
+        HI = "рдкреВрд░реА рджреБрдирд┐рдпрд╛ рдореЗрдВ рд░реЛрд╢рдиреА рдЪрд╛рд▓реВ рдХрд░реЗрдВ! рд╕рднреА рдбрд░рд╛рд╡рдиреА рдкрд░рдЫрд╛рдЗрдпреЛрдВ рдХреЛ рд╣рдЯрд╛ рджреЗрдВ рддрд╛рдХрд┐ рд╣рд░ рдЧреБрдлрд╛ рдФрд░ рдХрдорд░рд╛ рдЙрдЬреНрдЬреНрд╡рд▓ рд╣реЛ рдЬрд╛рдПред",
+        DE = "Schalte die Lichter auf der ganzen Welt ein! Entferne alle gruseligen Schatten, damit jede H├╢hle hell wird."
     },
     
-    ["AFK_T"] = {ID = "Anti-AFK", EN = "Anti-AFK", PT = "Anti-AFK", ZH = "防挂机", ES = "Anti-AFK", AR = "مضاد الطرد", FR = "Anti-AFK", RU = "Анти-АФК", HI = "एंटी-AFK", DE = "Anti-AFK"},
+    ["AFK_T"] = {ID = "Anti-AFK", EN = "Anti-AFK", PT = "Anti-AFK", ZH = "щШ▓цМВцЬ║", ES = "Anti-AFK", AR = "┘Е╪╢╪з╪п ╪з┘Д╪╖╪▒╪п", FR = "Anti-AFK", RU = "╨Р╨╜╤В╨╕-╨Р╨д╨Ъ", HI = "рдПрдВрдЯреА-AFK", DE = "Anti-AFK"},
     ["AFK_D"] = {
         ID = "Perlindungan super agar kamu tidak ditendang keluar saat diam! Bisa ditinggal tidur atau makan dengan 100% aman.",
         EN = "Super protection so you don't get kicked out when idle! You can leave it to sleep or eat 100% safely.",
-        PT = "Super proteção para você não ser expulso! Você pode deixar para dormir ou comer com 100% de segurança.",
-        ZH = "超级保护，让你在发呆时不会被踢出游戏！你可以100%安全地离开去睡觉或吃饭。",
-        ES = "¡Súper protección para que no te expulsen cuando estás inactivo! Puedes ir a dormir o comer 100% seguro.",
-        AR = "حماية فائقة حتى لا يتم طردك عند الخمول! يمكنك تركه للنوم أو تناول الطعام بأمان تام.",
-        FR = "Super protection pour ne pas être expulsé ! Laissez le jeu pour dormir ou manger en toute sécurité.",
-        RU = "Супер защита, чтобы тебя не выгнали, когда ты АФК! Можешь смело спать или есть на 100% безопасно.",
-        HI = "सुपर सुरक्षा ताकि जब आप निष्क्रिय हों तो आपको बाहर न निकाला जाए! आप सुरक्षित रूप से सो सकते हैं या खा सकते हैं।",
+        PT = "Super prote├з├гo para voc├к n├гo ser expulso! Voc├к pode deixar para dormir ou comer com 100% de seguran├зa.",
+        ZH = "ш╢Еч║зф┐ЭцКдя╝Мшойф╜ахЬихПСхСЖцЧ╢ф╕Нф╝Ъшвлш╕вхЗ║ц╕╕цИПя╝Бф╜ахПпф╗е100%хоЙхЕихЬ░чж╗х╝АхО╗чЭбшзЙцИЦхРГщенуАВ",
+        ES = "┬бS├║per protecci├│n para que no te expulsen cuando est├бs inactivo! Puedes ir a dormir o comer 100% seguro.",
+        AR = "╪н┘Е╪з┘К╪й ┘Б╪з╪ж┘В╪й ╪н╪к┘Й ┘Д╪з ┘К╪к┘Е ╪╖╪▒╪п┘Г ╪╣┘Ж╪п ╪з┘Д╪о┘Е┘И┘Д! ┘К┘Е┘Г┘Ж┘Г ╪к╪▒┘Г┘З ┘Д┘Д┘Ж┘И┘Е ╪г┘И ╪к┘Ж╪з┘И┘Д ╪з┘Д╪╖╪╣╪з┘Е ╪и╪г┘Е╪з┘Ж ╪к╪з┘Е.",
+        FR = "Super protection pour ne pas ├кtre expuls├й ! Laissez le jeu pour dormir ou manger en toute s├йcurit├й.",
+        RU = "╨б╤Г╨┐╨╡╤А ╨╖╨░╤Й╨╕╤В╨░, ╤З╤В╨╛╨▒╤Л ╤В╨╡╨▒╤П ╨╜╨╡ ╨▓╤Л╨│╨╜╨░╨╗╨╕, ╨║╨╛╨│╨┤╨░ ╤В╤Л ╨Р╨д╨Ъ! ╨Ь╨╛╨╢╨╡╤И╤М ╤Б╨╝╨╡╨╗╨╛ ╤Б╨┐╨░╤В╤М ╨╕╨╗╨╕ ╨╡╤Б╤В╤М ╨╜╨░ 100% ╨▒╨╡╨╖╨╛╨┐╨░╤Б╨╜╨╛.",
+        HI = "рд╕реБрдкрд░ рд╕реБрд░рдХреНрд╖рд╛ рддрд╛рдХрд┐ рдЬрдм рдЖрдк рдирд┐рд╖реНрдХреНрд░рд┐рдп рд╣реЛрдВ рддреЛ рдЖрдкрдХреЛ рдмрд╛рд╣рд░ рди рдирд┐рдХрд╛рд▓рд╛ рдЬрд╛рдП! рдЖрдк рд╕реБрд░рдХреНрд╖рд┐рдд рд░реВрдк рд╕реЗ рд╕реЛ рд╕рдХрддреЗ рд╣реИрдВ рдпрд╛ рдЦрд╛ рд╕рдХрддреЗ рд╣реИрдВред",
         DE = "Super Schutz, damit du nicht gekickt wirst! Du kannst das Spiel sicher verlassen, um zu schlafen oder zu essen."
     },
     
-    ["Ping"] = {ID = "Ping", EN = "Ping", PT = "Ping", ZH = "延迟", ES = "Ping", AR = "البينغ", FR = "Ping", RU = "Пинг", HI = "पिंग", DE = "Ping"},
-    ["FPS"] = {ID = "FPS", EN = "FPS", PT = "FPS", ZH = "帧率", ES = "FPS", AR = "الإطارات", FR = "IPS", RU = "ФПС", HI = "एफपीएस", DE = "FPS"},
-    ["Clock"] = {ID = "Jam", EN = "Clock", PT = "Relógio", ZH = "时间", ES = "Reloj", AR = "الوقت", FR = "Horloge", RU = "Время", HI = "समय", DE = "Uhr"},
+    ["Ping"] = {ID = "Ping", EN = "Ping", PT = "Ping", ZH = "х╗╢ш┐Я", ES = "Ping", AR = "╪з┘Д╪и┘К┘Ж╪║", FR = "Ping", RU = "╨Я╨╕╨╜╨│", HI = "рдкрд┐рдВрдЧ", DE = "Ping"},
+    ["FPS"] = {ID = "FPS", EN = "FPS", PT = "FPS", ZH = "х╕зчОЗ", ES = "FPS", AR = "╪з┘Д╪е╪╖╪з╪▒╪з╪к", FR = "IPS", RU = "╨д╨Я╨б", HI = "рдПрдлрдкреАрдПрд╕", DE = "FPS"},
+    ["Clock"] = {ID = "Jam", EN = "Clock", PT = "Rel├│gio", ZH = "цЧ╢щЧ┤", ES = "Reloj", AR = "╪з┘Д┘И┘В╪к", FR = "Horloge", RU = "╨Т╤А╨╡╨╝╤П", HI = "рд╕рдордп", DE = "Uhr"},
     
-    ["Notif_T"] = {ID = "Berhasil Dieksekusi!", EN = "Successfully Executed!", PT = "Executado com Sucesso!", ZH = "执行成功！", ES = "¡Ejecutado con éxito!", AR = "تم التنفيذ بنجاح!", FR = "Exécuté avec succès!", RU = "Успешно запущено!", HI = "सफलतापूर्वक!", DE = "Erfolgreich ausgeführt!"},
+    ["Notif_T"] = {ID = "Berhasil Dieksekusi!", EN = "Successfully Executed!", PT = "Executado com Sucesso!", ZH = "цЙзшбМцИРхКЯя╝Б", ES = "┬бEjecutado con ├йxito!", AR = "╪к┘Е ╪з┘Д╪к┘Ж┘Б┘К╪░ ╪и┘Ж╪м╪з╪н!", FR = "Ex├йcut├й avec succ├иs!", RU = "╨г╤Б╨┐╨╡╤И╨╜╨╛ ╨╖╨░╨┐╤Г╤Й╨╡╨╜╨╛!", HI = "рд╕рдлрд▓рддрд╛рдкреВрд░реНрд╡рдХ!", DE = "Erfolgreich ausgef├╝hrt!"},
     ["Notif_D"] = {
         ID = "Selamat datang di Vickyyvall Hub! Semuanya sudah siap, ayo mulai petualangan seru dan jadilah yang terhebat!",
         EN = "Welcome to Vickyyvall Hub! Everything is ready, let's start an exciting adventure and be the greatest!",
-        PT = "Bem-vindo ao Vickyyvall Hub! Tudo pronto, vamos começar uma aventura e ser o melhor!",
-        ZH = "欢迎来到 Vickyyvall Hub！一切准备就绪，让我们开始激动人心的冒险，成为最棒的吧！",
-        ES = "¡Bienvenido a Vickyyvall Hub! Todo está listo, ¡comienza una aventura emocionante y sé el mejor!",
-        AR = "مرحبا بك في Vickyyvall Hub! كل شيء جاهز، لنبدأ مغامرة مثيرة ونكون الأعظم!",
-        FR = "Bienvenue sur Vickyyvall Hub ! Tout est prêt, commencez une aventure passionnante et soyez le meilleur !",
-        RU = "Добро пожаловать в Vickyyvall Hub! Все готово, давай начнем приключение и станем лучшими!",
-        HI = "Vickyyvall हब में आपका स्वागत है! सब कुछ तैयार है, आइए एक रोमांचक साहसिक कार्य शुरू करें!",
+        PT = "Bem-vindo ao Vickyyvall Hub! Tudo pronto, vamos come├зar uma aventura e ser o melhor!",
+        ZH = "цмвш┐ОцЭехИ░ Vickyyvall Hubя╝Бф╕АхИЗхЗЖхдЗх░▒ч╗кя╝МшойцИСф╗мх╝АхзЛц┐АхКиф║║х┐ГчЪДхЖТщЩйя╝МцИРф╕║цЬАцгТчЪДхРзя╝Б",
+        ES = "┬бBienvenido a Vickyyvall Hub! Todo est├б listo, ┬бcomienza una aventura emocionante y s├й el mejor!",
+        AR = "┘Е╪▒╪н╪и╪з ╪и┘Г ┘Б┘К Vickyyvall Hub! ┘Г┘Д ╪┤┘К╪б ╪м╪з┘З╪▓╪М ┘Д┘Ж╪и╪п╪г ┘Е╪║╪з┘Е╪▒╪й ┘Е╪л┘К╪▒╪й ┘И┘Ж┘Г┘И┘Ж ╪з┘Д╪г╪╣╪╕┘Е!",
+        FR = "Bienvenue sur Vickyyvall Hub ! Tout est pr├кt, commencez une aventure passionnante et soyez le meilleur !",
+        RU = "╨Ф╨╛╨▒╤А╨╛ ╨┐╨╛╨╢╨░╨╗╨╛╨▓╨░╤В╤М ╨▓ Vickyyvall Hub! ╨Т╤Б╨╡ ╨│╨╛╤В╨╛╨▓╨╛, ╨┤╨░╨▓╨░╨╣ ╨╜╨░╤З╨╜╨╡╨╝ ╨┐╤А╨╕╨║╨╗╤О╤З╨╡╨╜╨╕╨╡ ╨╕ ╤Б╤В╨░╨╜╨╡╨╝ ╨╗╤Г╤З╤И╨╕╨╝╨╕!",
+        HI = "Vickyyvall рд╣рдм рдореЗрдВ рдЖрдкрдХрд╛ рд╕реНрд╡рд╛рдЧрдд рд╣реИ! рд╕рдм рдХреБрдЫ рддреИрдпрд╛рд░ рд╣реИ, рдЖрдЗрдП рдПрдХ рд░реЛрдорд╛рдВрдЪрдХ рд╕рд╛рд╣рд╕рд┐рдХ рдХрд╛рд░реНрдп рд╢реБрд░реВ рдХрд░реЗрдВ!",
         DE = "Willkommen im Vickyyvall Hub! Alles ist bereit, lass uns ein aufregendes Abenteuer beginnen!"
     },
     
-    ["Pop_Title"] = {ID = "Keluar dari Hub?", EN = "Exit Hub?", PT = "Sair do Hub?", ZH = "退出中心吗？", ES = "¿Salir del Hub?", AR = "خروج؟", FR = "Quitter le Hub?", RU = "Выйти из Hub?", HI = "हब छोड़ें?", DE = "Hub verlassen?"},
+    ["Pop_Title"] = {ID = "Keluar dari Hub?", EN = "Exit Hub?", PT = "Sair do Hub?", ZH = "щААхЗ║ф╕нх┐ГхРЧя╝Я", ES = "┬┐Salir del Hub?", AR = "╪о╪▒┘И╪м╪Я", FR = "Quitter le Hub?", RU = "╨Т╤Л╨╣╤В╨╕ ╨╕╨╖ Hub?", HI = "рд╣рдм рдЫреЛрдбрд╝реЗрдВ?", DE = "Hub verlassen?"},
     ["Pop_Desc"] = {
         ID = "Apakah Anda yakin ingin mematikan script Vickyyvall Hub?", 
         EN = "Are you sure you want to close the script?", 
         PT = "Tem certeza de que deseja fechar o script?", 
         ZH = "\u{60a8}\u{786e}\u{5b9a}\u{8981}\u{5173}\u{95ed}\u{811a}\u{672c}\u{5417}\u{ff1f}", 
-        ES = "¿Estás seguro de que quieres cerrar el script?", 
+        ES = "┬┐Est├бs seguro de que quieres cerrar el script?", 
         AR = "\u{0647}\u{0644} \u{0625}\u{0646}\u{062a} \u{0645}\u{062a}\u{0623}\u{0643}\u{062f}\u{061f}", 
-        FR = "Êtes-vous sûr?", 
+        FR = "├Кtes-vous s├╗r?", 
         RU = "\u{0412}\u{044b} \u{0443}\u{0432}\u{0435}\u{0440}\u{0435}\u{043d}\u{044b}?", 
         HI = "\u{0915}\u{094d}\u{092f}\u{093e} \u{0906}\u{092a} \u{0938}\u{094d}\u{0915}\u{094d}\u{0930}\u{093f}\u{092a}\u{094d}\u{091f} \u{092c}\u{0902}\u{0926} \u{0915}\u{0930}\u{0928}\u{093e} \u{091a}\u{093e}\u{0939}\u{0924}\u{0947} \u{0939}\u{0948}\u{0902}?", 
         DE = "Sind Sie sicher?"
     },
     
-    ["Pop_Yes"] = {ID = "Ya", EN = "Yes", PT = "Sim", ZH = "是", ES = "Sí", AR = "نعم", FR = "Oui", RU = "Да", HI = "हाँ", DE = "Ja"},
-    ["Pop_No"] = {ID = "Batal", EN = "Cancel", PT = "Cancelar", ZH = "取消", ES = "Cancelar", AR = "إلغاء", FR = "Annuler", RU = "Отмена", HI = "रद्द करें", DE = "Abbrechen"},
+    ["Pop_Yes"] = {ID = "Ya", EN = "Yes", PT = "Sim", ZH = "цШп", ES = "S├н", AR = "┘Ж╪╣┘Е", FR = "Oui", RU = "╨Ф╨░", HI = "рд╣рд╛рдБ", DE = "Ja"},
+    ["Pop_No"] = {ID = "Batal", EN = "Cancel", PT = "Cancelar", ZH = "хПЦц╢И", ES = "Cancelar", AR = "╪е┘Д╪║╪з╪б", FR = "Annuler", RU = "╨Ю╤В╨╝╨╡╨╜╨░", HI = "рд░рджреНрдж рдХрд░реЗрдВ", DE = "Abbrechen"},
 
-    ["Lang_T"] = {ID = "Pengaturan Bahasa", EN = "Language Settings", PT = "Idioma", ZH = "语言设置", ES = "Idioma", AR = "اللغة", FR = "Langue", RU = "Язык", HI = "भाषा सेटिंग्स", DE = "Sprache"},
+    ["Lang_T"] = {ID = "Pengaturan Bahasa", EN = "Language Settings", PT = "Idioma", ZH = "шпншиАшо╛ч╜о", ES = "Idioma", AR = "╪з┘Д┘Д╪║╪й", FR = "Langue", RU = "╨п╨╖╤Л╨║", HI = "рднрд╛рд╖рд╛ рд╕реЗрдЯрд┐рдВрдЧреНрд╕", DE = "Sprache"},
     ["Lang_D"] = {
         ID = "Ganti bahasa menumu dengan sangat mudah! Tampilannya keren dan sangat gampang dipahami oleh siapapun.",
         EN = "Change your menu language very easily! It looks cool and is very easy for anyone to understand.",
-        PT = "Mude o idioma do seu menu facilmente! Parece legal e é muito fácil de entender para qualquer um.",
-        ZH = "非常轻松地更改菜单语言！它看起来很酷，任何人都能很容易理解。",
-        ES = "¡Cambia el idioma del menú muy fácilmente! Se ve genial y es muy fácil de entender para cualquiera.",
-        AR = "قم بتغيير لغة القائمة الخاصة بك بسهولة شديدة! يبدو رائعا وسهل الفهم لأي شخص.",
-        FR = "Changez la langue de votre menu très facilement ! C'est cool et très facile à comprendre pour tout le monde.",
-        RU = "Меняй язык меню очень легко! Выглядит круто и понятно абсолютно всем.",
-        HI = "अपनी मेनू भाषा बहुत आसानी से बदलें! यह अच्छा लग रहा है और किसी के लिए भी समझना बहुत आसान है।",
-        DE = "Ändere deine Menüsprache ganz einfach! Es sieht cool aus und ist für jeden leicht zu verstehen."
+        PT = "Mude o idioma do seu menu facilmente! Parece legal e ├й muito f├бcil de entender para qualquer um.",
+        ZH = "щЭЮх╕╕ш╜╗цЭ╛хЬ░цЫ┤цФ╣шПЬхНХшпншиАя╝БхоГчЬЛш╡╖цЭех╛ИщЕ╖я╝Мф╗╗ф╜Хф║║щГ╜шГ╜х╛Ихо╣цШУчРЖшзгуАВ",
+        ES = "┬бCambia el idioma del men├║ muy f├бcilmente! Se ve genial y es muy f├бcil de entender para cualquiera.",
+        AR = "┘В┘Е ╪и╪к╪║┘К┘К╪▒ ┘Д╪║╪й ╪з┘Д┘В╪з╪ж┘Е╪й ╪з┘Д╪о╪з╪╡╪й ╪и┘Г ╪и╪│┘З┘И┘Д╪й ╪┤╪п┘К╪п╪й! ┘К╪и╪п┘И ╪▒╪з╪ж╪╣╪з ┘И╪│┘З┘Д ╪з┘Д┘Б┘З┘Е ┘Д╪г┘К ╪┤╪о╪╡.",
+        FR = "Changez la langue de votre menu tr├иs facilement ! C'est cool et tr├иs facile ├а comprendre pour tout le monde.",
+        RU = "╨Ь╨╡╨╜╤П╨╣ ╤П╨╖╤Л╨║ ╨╝╨╡╨╜╤О ╨╛╤З╨╡╨╜╤М ╨╗╨╡╨│╨║╨╛! ╨Т╤Л╨│╨╗╤П╨┤╨╕╤В ╨║╤А╤Г╤В╨╛ ╨╕ ╨┐╨╛╨╜╤П╤В╨╜╨╛ ╨░╨▒╤Б╨╛╨╗╤О╤В╨╜╨╛ ╨▓╤Б╨╡╨╝.",
+        HI = "рдЕрдкрдиреА рдореЗрдиреВ рднрд╛рд╖рд╛ рдмрд╣реБрдд рдЖрд╕рд╛рдиреА рд╕реЗ рдмрджрд▓реЗрдВ! рдпрд╣ рдЕрдЪреНрдЫрд╛ рд▓рдЧ рд░рд╣рд╛ рд╣реИ рдФрд░ рдХрд┐рд╕реА рдХреЗ рд▓рд┐рдП рднреА рд╕рдордЭрдирд╛ рдмрд╣реБрдд рдЖрд╕рд╛рди рд╣реИред",
+        DE = "├Дndere deine Men├╝sprache ganz einfach! Es sieht cool aus und ist f├╝r jeden leicht zu verstehen."
     },
     
-    ["NotifRed_T"] = {ID = "Eits, Dilarang Akses!", EN = "Oops, Access Denied!", PT = "Ops, Acesso Negado!", ZH = "哎呀，拒绝访问！", ES = "¡Uy, Acceso Denegado!", AR = "عفوا، غير مسموح!", FR = "Oups, Accès Refusé!", RU = "Ой, Доступ Запрещен!", HI = "उफ़, पहुंच अस्वीकृत!", DE = "Hoppla, Zugriff verweigert!"},
+    ["NotifRed_T"] = {ID = "Eits, Dilarang Akses!", EN = "Oops, Access Denied!", PT = "Ops, Acesso Negado!", ZH = "хУОхСАя╝МцЛТч╗Эшо┐щЧоя╝Б", ES = "┬бUy, Acceso Denegado!", AR = "╪╣┘Б┘И╪з╪М ╪║┘К╪▒ ┘Е╪│┘Е┘И╪н!", FR = "Oups, Acc├иs Refus├й!", RU = "╨Ю╨╣, ╨Ф╨╛╤Б╤В╤Г╨┐ ╨Ч╨░╨┐╤А╨╡╤Й╨╡╨╜!", HI = "рдЙрдлрд╝, рдкрд╣реБрдВрдЪ рдЕрд╕реНрд╡реАрдХреГрдд!", DE = "Hoppla, Zugriff verweigert!"},
     ["NotifRed_D"] = {
         ID = "Aktifin Box ESP-nya dulu bos! Jangan asal pencet!", 
         EN = "Activate Box ESP first, boss! Don't just click randomly!", 
-        PT = "Ative o Box ESP primeiro, chefe! Não clique à toa!", 
-        ZH = "老板，请先激活 Box ESP！别乱按！", 
-        ES = "¡Activa Box ESP primero, jefe! ¡No hagas clic al azar!", 
-        AR = "قم بتنشيط Box ESP أولاً يا زعيم! لا تنقر عشوائياً!", 
+        PT = "Ative o Box ESP primeiro, chefe! N├гo clique ├а toa!", 
+        ZH = "шАБцЭ┐я╝Мшп╖хЕИц┐Ац┤╗ Box ESPя╝БхИлф╣▒цМЙя╝Б", 
+        ES = "┬бActiva Box ESP primero, jefe! ┬бNo hagas clic al azar!", 
+        AR = "┘В┘Е ╪и╪к┘Ж╪┤┘К╪╖ Box ESP ╪г┘И┘Д╪з┘Л ┘К╪з ╪▓╪╣┘К┘Е! ┘Д╪з ╪к┘Ж┘В╪▒ ╪╣╪┤┘И╪з╪ж┘К╪з┘Л!", 
         FR = "Activez d'abord Box ESP, chef ! Ne cliquez pas au hasard !", 
-        RU = "Сначала активируй Box ESP, босс! Не жми наугад!", 
-        HI = "बॉस, पहले बॉक्स ESP सक्रिय करें! बेतरतीब ढंग से क्लिक न करें!", 
+        RU = "╨б╨╜╨░╤З╨░╨╗╨░ ╨░╨║╤В╨╕╨▓╨╕╤А╤Г╨╣ Box ESP, ╨▒╨╛╤Б╤Б! ╨Э╨╡ ╨╢╨╝╨╕ ╨╜╨░╤Г╨│╨░╨┤!", 
+        HI = "рдмреЙрд╕, рдкрд╣рд▓реЗ рдмреЙрдХреНрд╕ ESP рд╕рдХреНрд░рд┐рдп рдХрд░реЗрдВ! рдмреЗрддрд░рддреАрдм рдврдВрдЧ рд╕реЗ рдХреНрд▓рд┐рдХ рди рдХрд░реЗрдВ!", 
         DE = "Aktiviere zuerst Box ESP, Boss! Klick nicht einfach wild herum!"    
     }
 }
 
 local LangList = {
-    "Indonesia (Default)", "English", "Português", "\u{4e2d}\u{6587} (Zh\u{014d}ngwén)", "Español", "\u{0627}\u{0644}\u{0639}\u{0631}\u{0628}\u{064a}\u{0629} (Al-'Arabiyyah)", "Français", "\u{0420}\u{0443}\u{0441}\u{0441}\u{043a}\u{0438}\u{0439} (Russkiy)", "\u{0939}\u{093f}\u{0928}\u{094d}\u{0926}\u{0940} (Hind\u{012b})", "Deutsch"
+    "Indonesia (Default)", "English", "Portugu├кs", "\u{4e2d}\u{6587} (Zh\u{014d}ngw├йn)", "Espa├▒ol", "\u{0627}\u{0644}\u{0639}\u{0631}\u{0628}\u{064a}\u{0629} (Al-'Arabiyyah)", "Fran├зais", "\u{0420}\u{0443}\u{0441}\u{0441}\u{043a}\u{0438}\u{0439} (Russkiy)", "\u{0939}\u{093f}\u{0928}\u{094d}\u{0926}\u{0940} (Hind\u{012b})", "Deutsch"
 }
 
 local LangMap = {
     ["Indonesia (Default)"] = "ID",
     ["English"] = "EN",
-    ["Português"] = "PT",
-    ["\u{4e2d}\u{6587} (Zh\u{014d}ngwén)"] = "ZH",
-    ["Español"] = "ES",
+    ["Portugu├кs"] = "PT",
+    ["\u{4e2d}\u{6587} (Zh\u{014d}ngw├йn)"] = "ZH",
+    ["Espa├▒ol"] = "ES",
     ["\u{0627}\u{0644}\u{0639}\u{0631}\u{0628}\u{064a}\u{0629} (Al-'Arabiyyah)"] = "AR",
-    ["Français"] = "FR",
+    ["Fran├зais"] = "FR",
     ["\u{0420}\u{0443}\u{0441}\u{0441}\u{043a}\u{0438}\u{0439} (Russkiy)"] = "RU",
     ["\u{0939}\u{093f}\u{0928}\u{094d}\u{0926}\u{0940} (Hind\u{012b})"] = "HI",
     ["Deutsch"] = "DE"
@@ -328,11 +341,11 @@ local LangMap = {
 local LangFlags = {
     ["Indonesia (Default)"] = "137384997162705",
     ["English"] = "120282236775675",
-    ["Português"] = "86904547771543",
-    ["\u{4e2d}\u{6587} (Zh\u{014d}ngwén)"] = "137557692066436",
-    ["Español"] = "74820341814573",
+    ["Portugu├кs"] = "86904547771543",
+    ["\u{4e2d}\u{6587} (Zh\u{014d}ngw├йn)"] = "137557692066436",
+    ["Espa├▒ol"] = "74820341814573",
     ["\u{0627}\u{0644}\u{0639}\u{0631}\u{0628}\u{064a}\u{0629} (Al-'Arabiyyah)"] = "136150632302206",
-    ["Français"] = "72328939051445",
+    ["Fran├зais"] = "72328939051445",
     ["\u{0420}\u{0443}\u{0441}\u{0441}\u{043a}\u{0438}\u{0439} (Russkiy)"] = "80116341008808",
     ["\u{0939}\u{093f}\u{0928}\u{094d}\u{0926}\u{0940} (Hind\u{012b})"] = "106599817489962",
     ["Deutsch"] = "92865794651131"
@@ -363,7 +376,7 @@ local function SendNotification()
     NotifFrame.Position = UDim2.new(1, 300, 1, -20)
     NotifFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
     NotifFrame.BackgroundTransparency = 0.2
-    NotifFrame.ZIndex = 9999 -- Dipaksa berada di paling atas layar!
+    NotifFrame.ZIndex = 9999 
     Instance.new("UICorner", NotifFrame).CornerRadius = UDim.new(0, 8)
     
     local NotifStroke = Instance.new("UIStroke", NotifFrame)
@@ -419,7 +432,7 @@ end
 task.spawn(SendNotification)
 
 local Capsule = Instance.new("TextButton", ScreenGui)
-Capsule.Size = UDim2.new(0, 130, 0, 34) -- TINGGI DITAMBAH JADI 34 BIAR LEGA & PREMIUM!
+Capsule.Size = UDim2.new(0, 130, 0, 34) 
 Capsule.AnchorPoint = Vector2.new(0.5, 0)
 Capsule.Position = UDim2.new(0.5, 0, 0, 10)
 Capsule.BackgroundColor3 = Color3.fromRGB(10, 10, 12)
@@ -427,10 +440,10 @@ Capsule.BackgroundTransparency = 0.15
 Capsule.Text = "    vickyyvall hub"
 Capsule.TextColor3 = Color3.fromRGB(240, 240, 240)
 Capsule.Font = FontTitle
-Capsule.TextSize = 12 -- Teks digedein dikit menyesuaikan kapsul
+Capsule.TextSize = 12 
 Capsule.Visible = true
 Capsule.AutoButtonColor = false
-Capsule.ZIndex = 10 -- Biar di depan bayangan
+Capsule.ZIndex = 10 
 Instance.new("UICorner", Capsule).CornerRadius = UDim.new(1, 0)
 
 local CapIcon = Instance.new("ImageLabel", Capsule)
@@ -469,22 +482,22 @@ TopBar.Size = UDim2.new(1, 0, 0, 40)
 TopBar.BackgroundTransparency = 1
 
 local LogoContainer = Instance.new("Frame", TopBar)
-LogoContainer.Size = UDim2.new(0, 26, 0, 26) -- 🔥 DIGEDEIN BIAR MAKIN SANGAR & SEMPURNA!
+LogoContainer.Size = UDim2.new(0, 26, 0, 26) 
 LogoContainer.Position = UDim2.new(0, 16, 0.5, -13)
 LogoContainer.BackgroundTransparency = 1
 
--- LAYER BAWAH (RGB LOGO UTAMA {V})
+
 local LogoIcon = Instance.new("ImageLabel", LogoContainer)
 LogoIcon.Size = UDim2.new(1, 0, 1, 0)
 LogoIcon.BackgroundTransparency = 1
-LogoIcon.Image = "rbxthumb://type=Asset&id=128173125009119&w=150&h=150" -- 🔥 LOGO BUATAN LU!
+LogoIcon.Image = "rbxthumb://type=Asset&id=128173125009119&w=150&h=150" 
 LogoIcon.ZIndex = 1
 
--- LAYER ATAS (KILATAN EMAS CERAH TETEP ADA)
+
 local LogoShine = Instance.new("ImageLabel", LogoContainer)
 LogoShine.Size = UDim2.new(1, 0, 1, 0)
 LogoShine.BackgroundTransparency = 1
-LogoShine.Image = "rbxthumb://type=Asset&id=128173125009119&w=150&h=150" -- 🔥 PAKAI LOGO LU JUGA!
+LogoShine.Image = "rbxthumb://type=Asset&id=128173125009119&w=150&h=150" 
 LogoShine.ImageColor3 = Color3.fromRGB(255, 245, 180) 
 LogoShine.ZIndex = 2
 
@@ -492,7 +505,7 @@ local ShineGrad = Instance.new("UIGradient", LogoShine)
 ShineGrad.Transparency = NumberSequence.new({
     NumberSequenceKeypoint.new(0, 1),
     NumberSequenceKeypoint.new(0.2, 1),
-    NumberSequenceKeypoint.new(0.5, 0), -- Kilatan dibuat super tebal & menyala!
+    NumberSequenceKeypoint.new(0.5, 0), 
     NumberSequenceKeypoint.new(0.8, 1),
     NumberSequenceKeypoint.new(1, 1)
 })
@@ -500,14 +513,14 @@ ShineGrad.Rotation = 45
 
 RunService.RenderStepped:Connect(function()
     LogoIcon.ImageColor3 = Color3.fromHSV((tick() * 0.15) % 1, 0.9, 1)
-    ShineGrad.Rotation = 45 -- Memastikan sudutnya serong kanan bawah!
+    ShineGrad.Rotation = 45 
     local t = (tick() % 2) / 2 
     ShineGrad.Offset = Vector2.new(-1.5 + (t * 3), 0)
 end)
 
 local Watermark = Instance.new("TextLabel", TopBar)
 Watermark.Size = UDim2.new(0, 200, 1, 0)
-Watermark.Position = UDim2.new(0, 44, 0, 0) -- 🔥 DIDEKETIN DIKIT KE LOGO BIAR ROMANTIS!
+Watermark.Position = UDim2.new(0, 44, 0, 0) 
 Watermark.BackgroundTransparency = 1
 Watermark.Text = "VICKYYVALL HUB"
 Watermark.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -540,7 +553,7 @@ CloseIcon.Image = "rbxthumb://type=Asset&id=83903592827313&w=150&h=150"
 CloseIcon.ImageColor3 = Color3.fromRGB(255, 85, 85)
 CloseIcon.ZIndex = 50
 
--- ICON FULLSCREEN BARU (DI TENGAH MUTLAK!)
+
 local BtnMax = Instance.new("TextButton", TopBar)
 BtnMax.Size = UDim2.new(0, 35, 0, 35)
 BtnMax.Position = UDim2.new(1, -75, 0.5, -17.5)
@@ -556,7 +569,7 @@ MaxIcon.Image = "rbxthumb://type=Asset&id=107300063295291&w=150&h=150"
 MaxIcon.ImageColor3 = ColorDesc
 MaxIcon.ZIndex = 50
 
--- ICON MINIMIZE DIGESER KIRI BIAR GAK NUMPUK
+
 local BtnMin = Instance.new("TextButton", TopBar)
 BtnMin.Size = UDim2.new(0, 35, 0, 35)
 BtnMin.Position = UDim2.new(1, -110, 0.5, -17.5) 
@@ -580,7 +593,7 @@ SidebarBG.BackgroundTransparency = 0.3
 Instance.new("UICorner", SidebarBG).CornerRadius = UDim.new(0, 8)
 SidebarBG.ClipsDescendants = true
 
--- PROFILE SECTION PREMIUM
+
 local ProfileFrame = Instance.new("Frame", SidebarBG)
 ProfileFrame.Size = UDim2.new(1, 0, 0, 45)
 ProfileFrame.Position = UDim2.new(0, 0, 0, 5)
@@ -604,9 +617,9 @@ ProfileStroke.Color = ColorAccent
 ProfileStroke.Thickness = 1.5
 ProfileStroke.Transparency = 0.2
 
--- ==========================================================
--- PROFIL DENGAN CENTANG BIRU (AUTO-NYESUAIIN PANJANG NAMA)
--- ==========================================================
+
+
+
 local NameStack = Instance.new("Frame", ProfileFrame)
 NameStack.Size = UDim2.new(1, -48, 0, 16)
 NameStack.Position = UDim2.new(0, 46, 0, 8)
@@ -615,12 +628,12 @@ NameStack.BackgroundTransparency = 1
 local NLayout = Instance.new("UIListLayout", NameStack)
 NLayout.FillDirection = Enum.FillDirection.Horizontal
 NLayout.SortOrder = Enum.SortOrder.LayoutOrder
-NLayout.Padding = UDim.new(0, 4) -- Jarak manja antara nama & centang
+NLayout.Padding = UDim.new(0, 4) 
 NLayout.VerticalAlignment = Enum.VerticalAlignment.Center
 
 local ProfileDisp = Instance.new("TextLabel", NameStack)
 ProfileDisp.Size = UDim2.new(0, 0, 1, 0)
-ProfileDisp.AutomaticSize = Enum.AutomaticSize.X -- Lebar otomatis nyesuaiin nama!
+ProfileDisp.AutomaticSize = Enum.AutomaticSize.X 
 ProfileDisp.BackgroundTransparency = 1
 ProfileDisp.Text = LocalPlayer.DisplayName
 ProfileDisp.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -749,14 +762,14 @@ local function CreateButton(parent, iconId, iconColor, keyT, keyD, callback)
     local img = Instance.new("ImageLabel", btn)
     img.Size = UDim2.new(0, 24, 0, 24) 
     img.AnchorPoint = Vector2.new(0, 0.5)
-    img.Position = UDim2.new(0, 12, 0.5, 0) -- ICON MUTLAK DI TENGAH KIRI!
+    img.Position = UDim2.new(0, 12, 0.5, 0) 
     img.BackgroundTransparency = 1
     img.Image = iconId
     img.ImageColor3 = iconColor
     
     local tLbl = Instance.new("TextLabel", btn)
     tLbl.Size = UDim2.new(1, -70, 0, 16) 
-    tLbl.Position = UDim2.new(0, 48, 0, 8) -- GESER KANAN (X=48) DAN LEGA DI ATAS (Y=8)!
+    tLbl.Position = UDim2.new(0, 48, 0, 8) 
     tLbl.BackgroundTransparency = 1
     tLbl.TextColor3 = ColorText
     tLbl.Font = FontMain
@@ -765,8 +778,8 @@ local function CreateButton(parent, iconId, iconColor, keyT, keyD, callback)
     RegisterTranslation(tLbl, "Text", keyT)
     
     local dLbl = Instance.new("TextLabel", btn)
-    dLbl.Size = UDim2.new(1, -70, 0, 42) -- PAS BANGET, NGGAK NYENTUH TANAH WOY!
-    dLbl.Position = UDim2.new(0, 48, 0, 26) -- PERSIS DITENGAH TEKSNYA!
+    dLbl.Size = UDim2.new(1, -70, 0, 42) 
+    dLbl.Position = UDim2.new(0, 48, 0, 26) 
     dLbl.BackgroundTransparency = 1
     dLbl.TextColor3 = ColorDesc
     dLbl.Font = FontDesc
@@ -803,14 +816,14 @@ local function CreateToggle(parent, iconId, baseIconColor, glowColor, keyT, keyD
     local img = Instance.new("ImageLabel", f)
     img.Size = UDim2.new(0, 24, 0, 24) 
     img.AnchorPoint = Vector2.new(0, 0.5)
-    img.Position = UDim2.new(0, 12, 0.5, 0) -- TENGAH MUTLAK!
+    img.Position = UDim2.new(0, 12, 0.5, 0) 
     img.BackgroundTransparency = 1
     img.Image = iconId
     img.ImageColor3 = baseIconColor
     
     local tLbl = Instance.new("TextLabel", f)
     tLbl.Size = UDim2.new(1, -92, 0, 16) 
-    tLbl.Position = UDim2.new(0, 48, 0, 8) -- RAPIH, LEGA, GESER KANAN!
+    tLbl.Position = UDim2.new(0, 48, 0, 8) 
     tLbl.BackgroundTransparency = 1
     tLbl.TextColor3 = ColorText
     tLbl.Font = FontMain
@@ -819,8 +832,8 @@ local function CreateToggle(parent, iconId, baseIconColor, glowColor, keyT, keyD
     RegisterTranslation(tLbl, "Text", keyT)
     
     local dLbl = Instance.new("TextLabel", f)
-    dLbl.Size = UDim2.new(1, -92, 0, 42) -- AMAN DARI LANTAI!
-    dLbl.Position = UDim2.new(0, 48, 0, 26) -- CENTER!
+    dLbl.Size = UDim2.new(1, -92, 0, 42) 
+    dLbl.Position = UDim2.new(0, 48, 0, 26) 
     dLbl.BackgroundTransparency = 1
     dLbl.TextColor3 = ColorDesc
     dLbl.Font = FontDesc
@@ -868,14 +881,14 @@ local function CreateToggleSlider(parent, iconId, iconColor, keyT, keyD, min, ma
     local img = Instance.new("ImageLabel", f)
     img.Size = UDim2.new(0, 24, 0, 24) 
     img.AnchorPoint = Vector2.new(0, 0.5)
-    img.Position = UDim2.new(0, 12, 0, 37.5) -- TENGAH MUTLAK TERHADAP TEXT (Y=75/2)
+    img.Position = UDim2.new(0, 12, 0, 37.5) 
     img.BackgroundTransparency = 1
     img.Image = iconId
     img.ImageColor3 = iconColor
     
     local tLbl = Instance.new("TextLabel", f)
     tLbl.Size = UDim2.new(1, -86, 0, 16) 
-    tLbl.Position = UDim2.new(0, 48, 0, 8) -- RAPIH, LEGA!
+    tLbl.Position = UDim2.new(0, 48, 0, 8) 
     tLbl.BackgroundTransparency = 1
     tLbl.TextColor3 = ColorText
     tLbl.Font = FontMain
@@ -884,8 +897,8 @@ local function CreateToggleSlider(parent, iconId, iconColor, keyT, keyD, min, ma
     RegisterTranslation(tLbl, "Text", keyT)
     
     local dLbl = Instance.new("TextLabel", f)
-    dLbl.Size = UDim2.new(1, -86, 0, 42) -- AMAN DARI LANTAI!
-    dLbl.Position = UDim2.new(0, 48, 0, 26) -- CENTER!
+    dLbl.Size = UDim2.new(1, -86, 0, 42) 
+    dLbl.Position = UDim2.new(0, 48, 0, 26) 
     dLbl.BackgroundTransparency = 1
     dLbl.TextColor3 = ColorDesc
     dLbl.Font = FontDesc
@@ -1026,22 +1039,22 @@ B1.BackgroundTransparency = 0.15
 B1:FindFirstChildOfClass("ImageLabel").ImageColor3 = ColorAccent
 B1:FindFirstChildOfClass("TextLabel").TextColor3 = ColorText
 
--- ==========================================================
--- 🔥 FITUR RADAR TRACKER TEMAN REAL-TIME (PERFECT 1:1 EDITION)
--- ==========================================================
+
+
+
 local TrackerFrame = Instance.new("Frame", P3)
-TrackerFrame.Size = UDim2.new(1, -4, 0, 140) -- 🔥 TINGGI DITAMBAH BIAR RADAR TEMAN BISA DI BAWAH MAP!
+TrackerFrame.Size = UDim2.new(1, -4, 0, 140) 
 TrackerFrame.BackgroundColor3 = ColorMain
 TrackerFrame.BackgroundTransparency = 0.5
 TrackerFrame.LayoutOrder = -1
 Instance.new("UICorner", TrackerFrame).CornerRadius = UDim.new(0, 16)
 
--- 🔥 FRAME KOTAK 1:1 DENGAN TUMPUL PREMIUM (BUKAN KAPSUL!)
+
 local MapImageBg = Instance.new("Frame", TrackerFrame)
 MapImageBg.Size = UDim2.new(0, 80, 0, 80)
 MapImageBg.Position = UDim2.new(0, 12, 0, 12) 
 MapImageBg.BackgroundColor3 = Color3.fromRGB(40, 40, 45)
-Instance.new("UICorner", MapImageBg).CornerRadius = UDim.new(0, 18) -- 🔥 TUMPUL BANGET TAPI TETEP KOTAK TEGAS!
+Instance.new("UICorner", MapImageBg).CornerRadius = UDim.new(0, 18) 
 MapImageBg.ClipsDescendants = true
 
 local MapImage = Instance.new("ImageLabel", MapImageBg)
@@ -1052,21 +1065,21 @@ MapImage.BackgroundTransparency = 1
 MapImage.ScaleType = Enum.ScaleType.Crop 
 MapImage.Image = "rbxthumb://type=Asset&id=14563958719&w=150&h=150" 
 
--- ==========================================
--- 📌 BARISAN TEKS KANAN & ICON KECIL MANDIRI
--- ==========================================
 
--- 1. JUDUL MAP
+
+
+
+
 local IconJudul = Instance.new("ImageLabel", TrackerFrame)
 IconJudul.Size = UDim2.new(0, 14, 0, 14)
 IconJudul.Position = UDim2.new(0, 105, 0, 17)
 IconJudul.BackgroundTransparency = 1
-IconJudul.Image = "rbxthumb://type=Asset&id=2129457776&w=150&h=150" -- 🔥 KOSONG MANDIRI
+IconJudul.Image = "rbxthumb://type=Asset&id=2129457776&w=150&h=150" 
 IconJudul.ImageColor3 = ColorAccent
 
 local MapTitle = Instance.new("TextLabel", TrackerFrame)
 MapTitle.Size = UDim2.new(1, -130, 0, 14)
-MapTitle.Position = UDim2.new(0, 125, 0, 17) -- 🔥 AGAK KE ATAS SESUAI PERMINTAAN
+MapTitle.Position = UDim2.new(0, 125, 0, 17) 
 MapTitle.BackgroundTransparency = 1
 MapTitle.Text = GetText("Map_NotFound") 
 MapTitle.TextColor3 = ColorText
@@ -1075,12 +1088,12 @@ MapTitle.TextSize = 13
 MapTitle.TextXAlignment = Enum.TextXAlignment.Left
 MapTitle.TextTruncate = Enum.TextTruncate.AtEnd
 
--- 2. TANGGAL ASLI DIBUAT
+
 local IconTanggal = Instance.new("ImageLabel", TrackerFrame)
 IconTanggal.Size = UDim2.new(0, 14, 0, 14)
 IconTanggal.Position = UDim2.new(0, 105, 0, 42)
 IconTanggal.BackgroundTransparency = 1
-IconTanggal.Image = "rbxthumb://type=Asset&id=106533346160517&w=150&h=150" -- 🔥 KOSONG MANDIRI
+IconTanggal.Image = "rbxthumb://type=Asset&id=106533346160517&w=150&h=150" 
 IconTanggal.ImageColor3 = ColorAccent
 
 local MapDate = Instance.new("TextLabel", TrackerFrame)
@@ -1093,12 +1106,12 @@ MapDate.Font = Enum.Font.GothamMedium
 MapDate.TextSize = 11
 MapDate.TextXAlignment = Enum.TextXAlignment.Left
 
--- 3. WAKTU BERMAIN REAL-TIME
+
 local IconWaktu = Instance.new("ImageLabel", TrackerFrame)
 IconWaktu.Size = UDim2.new(0, 14, 0, 14)
 IconWaktu.Position = UDim2.new(0, 105, 0, 67)
 IconWaktu.BackgroundTransparency = 1
-IconWaktu.Image = "rbxthumb://type=Asset&id=17551409714&w=150&h=150" -- 🔥 KOSONG MANDIRI
+IconWaktu.Image = "rbxthumb://type=Asset&id=17551409714&w=150&h=150" 
 IconWaktu.ImageColor3 = ColorAccent
 
 local MapTime = Instance.new("TextLabel", TrackerFrame)
@@ -1111,11 +1124,11 @@ MapTime.Font = Enum.Font.GothamMedium
 MapTime.TextSize = 11
 MapTime.TextXAlignment = Enum.TextXAlignment.Left
 
--- ==========================================
--- ⚙️ LOGIKA PENGAMBILAN DATA NYATA & REAL-TIME
--- ==========================================
 
--- AMBIL DATA API ROBLOX (TANGGAL ASLI & JUDUL)
+
+
+
+
 task.spawn(function()
     pcall(function()
         if game.PlaceId > 0 then
@@ -1126,7 +1139,7 @@ task.spawn(function()
                     MapImage.Image = "rbxthumb://type=Asset&id=" .. info.IconImageAssetId .. "&w=150&h=150"
                 end
                 if info.Created then
-                    -- Format Tanggal Asli dari API Roblox (Contoh API: 2022-02-01T...)
+                    
                     local tahun, bulan, tanggal = string.match(info.Created, "(%d+)%-(%d+)%-(%d+)")
                     if tahun and bulan and tanggal then
                         MapDate.Text = "Tanggal dibuat: " .. tanggal .. "/" .. bulan .. "/" .. tahun
@@ -1137,9 +1150,9 @@ task.spawn(function()
     end)
 end)
 
--- LOGIKA WAKTU BERGERAK REAL-TIME DETIK PER DETIK (WAKTU SERVER MUTLAK)
+
 RunService.RenderStepped:Connect(function()
-    local waktuNyata = Workspace.DistributedGameTime -- Ambil waktu asli server berjalan!
+    local waktuNyata = Workspace.DistributedGameTime 
     local d = math.floor(waktuNyata / 86400)
     local h = math.floor((waktuNyata % 86400) / 3600)
     local m = math.floor((waktuNyata % 3600) / 60)
@@ -1152,12 +1165,12 @@ RunService.RenderStepped:Connect(function()
     end
 end)
 
--- ==========================================
--- 🫂 RADAR TEMAN (PINDAH KE BAWAH MAP SECARA MUTLAK!)
--- ==========================================
+
+
+
 local FriendList = Instance.new("Frame", TrackerFrame)
 FriendList.Size = UDim2.new(1, -24, 0, 26)
-FriendList.Position = UDim2.new(0, 12, 0, 105) -- 🔥 PINDAH KE BAWAH GAMBAR MAP! 
+FriendList.Position = UDim2.new(0, 12, 0, 105) 
 FriendList.BackgroundTransparency = 1
 
 local function CreateProfileImage(userId, zIndex)
@@ -1355,16 +1368,16 @@ Players.PlayerAdded:Connect(function(plr) task.wait(1.5); UpdateRadarTeman() end
 Players.PlayerRemoving:Connect(function(plr) UpdateRadarTeman() end)
 task.spawn(UpdateRadarTeman)
 
--- ==========================================================
--- 🔥 FITUR FLOATING SCROLL TO BOTTOM (PREMIUM AUTO-SCROLL MAGIC)
--- ==========================================================
+
+
+
 local ScrollDownBtn = Instance.new("ImageButton", PageContainer)
 ScrollDownBtn.Size = UDim2.new(0, 32, 0, 32)
 ScrollDownBtn.AnchorPoint = Vector2.new(1, 1)
-ScrollDownBtn.Position = UDim2.new(1, -25, 1, -25) -- 🔥 POJOK KANAN BAWAH NAIK DIKIT BIAR NGAMBANG SEMPURNA
+ScrollDownBtn.Position = UDim2.new(1, -25, 1, -25) 
 ScrollDownBtn.BackgroundTransparency = 1
 ScrollDownBtn.Image = "rbxthumb://type=Asset&id=134413307626859&w=150&h=150"
-ScrollDownBtn.ZIndex = 9999 -- Pastiin selalu paling atas
+ScrollDownBtn.ZIndex = 9999 
 ScrollDownBtn.Visible = false
 ScrollDownBtn.ImageTransparency = 1
 
@@ -1393,7 +1406,7 @@ end
 ScrollDownBtn.MouseButton1Click:Connect(function()
     if CurrentActivePage then
         local maxScroll = math.max(0, CurrentActivePage.AbsoluteCanvasSize.Y - CurrentActivePage.AbsoluteWindowSize.Y)
-        -- Ini rumus transisi level dewa, bosku!
+        
         TweenService:Create(CurrentActivePage, TweenInfo.new(1.2, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {CanvasPosition = Vector2.new(0, maxScroll)}):Play()
     end
 end)
@@ -1403,7 +1416,7 @@ RunService.RenderStepped:Connect(function()
         if child:IsA("ScrollingFrame") and child.Visible then
             if CurrentActivePage ~= child then
                 CurrentActivePage = child
-                CheckScrollStatus() -- Langsung dicek saat ganti tab!
+                CheckScrollStatus() 
             end
             break
         end
@@ -1416,7 +1429,7 @@ for _, child in pairs(PageContainer:GetChildren()) do
         child:GetPropertyChangedSignal("AbsoluteCanvasSize"):Connect(CheckScrollStatus)
     end
 end
--- ==========================================================
+
 
 P1.Visible = true
 
@@ -1424,22 +1437,22 @@ BtnMin.MouseButton1Click:Connect(function()
     Tween(MainFrame, {Size = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0.5, 0, 0, 27), BackgroundTransparency = 1}, 0.35).Completed:Connect(function() MainFrame.Visible = false end)
 end)
 
--- LOGIKA FULLSCREEN MEKAR LEGA TAPI SISA SEUPIL & TUMPUL MANJA!
+
 local isMaximized = false
 BtnMax.MouseButton1Click:Connect(function()
     isMaximized = not isMaximized
-    local mainCorner = MainFrame:FindFirstChildOfClass("UICorner") -- Deteksi sudut buat ditumpulin
+    local mainCorner = MainFrame:FindFirstChildOfClass("UICorner") 
     
     if isMaximized then
-        Tween(MainFrame, {Size = UDim2.new(0.92, 0, 0.96, 0)}, 0.4) -- MAKIN LEBAR KE ATAS BAWAH!
-        if mainCorner then Tween(mainCorner, {CornerRadius = UDim.new(0, 30)}, 0.4) end -- TUMPUL SUPER MANJA!
+        Tween(MainFrame, {Size = UDim2.new(0.92, 0, 0.96, 0)}, 0.4) 
+        if mainCorner then Tween(mainCorner, {CornerRadius = UDim.new(0, 30)}, 0.4) end 
         
         Tween(SidebarBG, {Size = UDim2.new(0, 140, 1, -50)}, 0.4)
         Tween(PageContainer, {Size = UDim2.new(1, -160, 1, -50), Position = UDim2.new(0, 155, 0, 40)}, 0.4)
         Tween(MaxIcon, {ImageColor3 = ColorAccent}, 0.3)
     else
         Tween(MainFrame, {Size = UDim2.new(0, 420, 0, 300)}, 0.4)
-        if mainCorner then Tween(mainCorner, {CornerRadius = UDim.new(0, 18)}, 0.4) end -- Balik tumpul normal
+        if mainCorner then Tween(mainCorner, {CornerRadius = UDim.new(0, 18)}, 0.4) end 
         
         Tween(SidebarBG, {Size = UDim2.new(0, 110, 1, -50)}, 0.4)
         Tween(PageContainer, {Size = UDim2.new(1, -130, 1, -50), Position = UDim2.new(0, 125, 0, 40)}, 0.4)
@@ -1466,19 +1479,19 @@ end)
 
 ApplyHover(Capsule, ColorMain, ColorToggleOff)
 
--- DI-REVAMP TOTAL: TUMPUL KOTAK MANJA LEBIH RINGKAS & MODERN!
+
 local ConfirmPopup = Instance.new("Frame", ScreenGui)
 ConfirmPopup.Size = UDim2.new(0, 250, 0, 120)
 ConfirmPopup.AnchorPoint = Vector2.new(0.5, 0.5)
 ConfirmPopup.Position = UDim2.new(0.5, 0, 0.5, 15)
 ConfirmPopup.BackgroundColor3 = Color3.fromRGB(12, 12, 15)
 ConfirmPopup.BackgroundTransparency = 1
-ConfirmPopup.ClipsDescendants = true -- FIX MUTLAK: Biar ga ada ujung lancip meluber keluar!
+ConfirmPopup.ClipsDescendants = true 
 ConfirmPopup.Visible = false
 ConfirmPopup.ZIndex = 999
 Instance.new("UICorner", ConfirmPopup).CornerRadius = UDim.new(0, 14)
 
--- FIX TAMBAHAN: Pastiin MainFrame juga strict clipnya biar ga ada lancip di ujung Hub
+
 if MainFrame then MainFrame.ClipsDescendants = true end
 
 local CTitle = Instance.new("TextLabel", ConfirmPopup)
@@ -1496,7 +1509,7 @@ local CDesc = Instance.new("TextLabel", ConfirmPopup)
 CDesc.Size = UDim2.new(1, -30, 0, 30)
 CDesc.Position = UDim2.new(0, 15, 0, 40)
 CDesc.BackgroundTransparency = 1
-CDesc.Text = "Apakah Anda yakin ingin mematikan script Vickyyvall Hub?" -- TEGAS PAKE ANDA! NO ALAY!
+CDesc.Text = "Apakah Anda yakin ingin mematikan script Vickyyvall Hub?" 
 CDesc.TextColor3 = ColorDesc
 CDesc.TextTransparency = 1
 CDesc.TextWrapped = true
@@ -1504,17 +1517,17 @@ CDesc.Font = FontDesc
 CDesc.TextSize = 10
 CDesc.ZIndex = 1000
 
--- RE-SETUP DICTIONARY BIAR BAHASA LAIN IKUT RE-RENDER TEGAS PAKE ANDA
-LangDict["Pop_Desc"] = {ID = "Apakah Anda yakin ingin mematikan script Vickyyvall Hub?", EN = "Are you sure you want to close the script?", PT = "Tem certeza de que deseja fechar o script?", ZH = "\u{60a8}\u{786e}\u{5b9a}\u{8981}\u{5173}\u{95ed}\u{811a}\u{672c}\u{5417}\u{ff1f}", ES = "¿Estás seguro de que quieres cerrar el script?", AR = "\u{0647}\u{0644} \u{0625}\u{0646}\u{062a} \u{0645}\u{062a}\u{0623}\u{0643}\u{062f}\u{061f}", FR = "Êtes-vous sûr?", RU = "\u{0412}\u{044b} \u{0443}\u{0432}\u{0435}\u{0440}\u{0435}\u{043d}\u{044b}?", HI = "\u{0915}\u{094d}\u{092f}\u{093e} \u{0906}\u{092a} \u{0938}\u{094d}\u{0915}\u{094d}\u{0930}\u{093f}\u{092a}\u{094d}\u{091f} \u{092c}\u{0902}\u{0926} \u{0915}\u{0930}\u{0928}\u{093e} \u{091a}\u{093e}\u{0939}\u{0924}\u{0947} \u{0939}\u{0948}\u{0902}?", DE = "Sind Sie sicher?"}
 
--- TOMBOL YA SEMPURNA (GELAP SEMPURNA BUKAN ABU/BIRU MURAHAN)
+LangDict["Pop_Desc"] = {ID = "Apakah Anda yakin ingin mematikan script Vickyyvall Hub?", EN = "Are you sure you want to close the script?", PT = "Tem certeza de que deseja fechar o script?", ZH = "\u{60a8}\u{786e}\u{5b9a}\u{8981}\u{5173}\u{95ed}\u{811a}\u{672c}\u{5417}\u{ff1f}", ES = "┬┐Est├бs seguro de que quieres cerrar el script?", AR = "\u{0647}\u{0644} \u{0625}\u{0646}\u{062a} \u{0645}\u{062a}\u{0623}\u{0643}\u{062f}\u{061f}", FR = "├Кtes-vous s├╗r?", RU = "\u{0412}\u{044b} \u{0443}\u{0432}\u{0435}\u{0440}\u{0435}\u{043d}\u{044b}?", HI = "\u{0915}\u{094d}\u{092f}\u{093e} \u{0906}\u{092a} \u{0938}\u{094d}\u{0915}\u{094d}\u{0930}\u{093f}\u{092a}\u{094d}\u{091f} \u{092c}\u{0902}\u{0926} \u{0915}\u{0930}\u{0928}\u{093e} \u{091a}\u{093e}\u{0939}\u{0924}\u{0947} \u{0939}\u{0948}\u{0902}?", DE = "Sind Sie sicher?"}
+
+
 local BtnYa = Instance.new("TextButton", ConfirmPopup)
 BtnYa.Size = UDim2.new(0, 95, 0, 30)
 BtnYa.Position = UDim2.new(0, 20, 0, 75)
-BtnYa.BackgroundColor3 = Color3.fromRGB(25, 25, 30) -- Gelap premium terintegrasi
+BtnYa.BackgroundColor3 = Color3.fromRGB(25, 25, 30) 
 BtnYa.BackgroundTransparency = 1
 BtnYa.Text = "Ya"
-BtnYa.TextColor3 = Color3.fromRGB(255, 75, 75) -- Merah aksen tegas tanda keluar
+BtnYa.TextColor3 = Color3.fromRGB(255, 75, 75) 
 BtnYa.TextTransparency = 1
 BtnYa.Font = FontTitle
 BtnYa.TextSize = 12
@@ -1522,7 +1535,7 @@ BtnYa.AutoButtonColor = false
 BtnYa.ZIndex = 1000
 Instance.new("UICorner", BtnYa).CornerRadius = UDim.new(0, 8)
 
--- TOMBOL BATAL SEMPURNA
+
 local BtnBatal = Instance.new("TextButton", ConfirmPopup)
 BtnBatal.Size = UDim2.new(0, 95, 0, 30)
 BtnBatal.Position = UDim2.new(1, -115, 0, 75)
@@ -1542,12 +1555,12 @@ RegisterTranslation(CDesc, "Text", "Pop_Desc")
 RegisterTranslation(BtnYa, "Text", "Pop_Yes")
 RegisterTranslation(BtnBatal, "Text", "Pop_No")
 
--- FUNGSI FADE DENGAN TRANSISI LEMAH LEMBUT (Quint Easing Style!)
+
 local function FadePopup(show)
     local targetAlpha = show and 0 or 1
     local targetBgAlpha = show and 0.15 or 1
     local targetPos = show and UDim2.new(0.5, 0, 0.5, 0) or UDim2.new(0.5, 0, 0.5, 15)
-    local duration = 0.5 -- Lemah lembut pelan tapi responsif
+    local duration = 0.5 
     
     if show then ConfirmPopup.Visible = true end
     
@@ -1572,13 +1585,13 @@ local function FadePopup(show)
     end
 end
 
--- HOVER PREMIUM UNTUK DUA TOMBOL POPUP
+
 BtnYa.MouseEnter:Connect(function() Tween(BtnYa, {BackgroundColor3 = Color3.fromRGB(40, 20, 20)}, 0.2) end)
 BtnYa.MouseLeave:Connect(function() Tween(BtnYa, {BackgroundColor3 = Color3.fromRGB(25, 25, 30)}, 0.2) end)
 BtnBatal.MouseEnter:Connect(function() Tween(BtnBatal, {BackgroundColor3 = Color3.fromRGB(35, 35, 45)}, 0.2) end)
 BtnBatal.MouseLeave:Connect(function() Tween(BtnBatal, {BackgroundColor3 = Color3.fromRGB(25, 25, 30)}, 0.2) end)
 
--- LOGIKA KLIK TRANSISI LEMAH LEMBUT PADA POPUP
+
 BtnBatal.MouseButton1Click:Connect(function()
     FadePopup(false)
     task.wait(0.3)
@@ -1597,13 +1610,13 @@ BtnYa.MouseButton1Click:Connect(function()
     end)
 end)
 
--- SETUP AWAL: Render tersembunyi di atas dekat kapsul biar pas di-execute ga ngagetin!
+
 MainFrame.Size = UDim2.new(0, 0, 0, 0)
 MainFrame.Position = UDim2.new(0.5, 0, 0, 27)
 MainFrame.Visible = false
 
 task.spawn(function()
-    task.wait(0.5) -- Biarkan semua aset selesai termuat
+    task.wait(0.5) 
     MainFrame.Visible = true
     Tween(MainFrame, {
         Size = UDim2.new(0, 420, 0, 300),
@@ -1746,7 +1759,7 @@ local hueOffset = 0
 CreateToggle(P2, "rbxthumb://type=Asset&id=5219208999&w=150&h=150", Color3.fromRGB(255, 255, 255), ColPink, "ESP_T", "ESP_D", function(s) ESP_NameDist = s end)
 CreateToggle(P2, "rbxthumb://type=Asset&id=13288270283&w=150&h=150", ColPink, nil, "HP_T", "HP_D", function(s) ESP_Health = s end)
 
--- BOX ESP TOGGLE (DENGAN DROPDOWN MANJA)
+
 local BoxFrame = Instance.new("Frame", P2)
 BoxFrame.Size = UDim2.new(1, -4, 0, 75)
 BoxFrame.BackgroundColor3 = ColorMain
@@ -1756,14 +1769,14 @@ Instance.new("UICorner", BoxFrame).CornerRadius = UDim.new(0, 8)
 local BoxImg = Instance.new("ImageLabel", BoxFrame)
 BoxImg.Size = UDim2.new(0, 18, 0, 18)
 BoxImg.AnchorPoint = Vector2.new(0, 0.5)
-BoxImg.Position = UDim2.new(0, 12, 0.5, 0) -- TENGAH MUTLAK KIRI!
+BoxImg.Position = UDim2.new(0, 12, 0.5, 0) 
 BoxImg.BackgroundTransparency = 1
 BoxImg.Image = "rbxthumb://type=Asset&id=112499571301742&w=150&h=150" 
 BoxImg.ImageColor3 = Color3.fromRGB(255, 255, 255) 
 
 local BoxTitle = Instance.new("TextLabel", BoxFrame)
 BoxTitle.Size = UDim2.new(1, -129, 0, 16) 
-BoxTitle.Position = UDim2.new(0, 48, 0, 8) -- RAPIH, LEGA, GESER KANAN!
+BoxTitle.Position = UDim2.new(0, 48, 0, 8) 
 BoxTitle.BackgroundTransparency = 1
 BoxTitle.TextColor3 = ColorText
 BoxTitle.Font = FontMain
@@ -1772,8 +1785,8 @@ BoxTitle.TextXAlignment = Enum.TextXAlignment.Left
 RegisterTranslation(BoxTitle, "Text", "Box_T")
 
 local BoxDesc = Instance.new("TextLabel", BoxFrame)
-BoxDesc.Size = UDim2.new(1, -129, 0, 42) -- PAS 42, NGGAK NYENTUH LANTAI!
-BoxDesc.Position = UDim2.new(0, 48, 0, 26) -- DITENGAH DENGAN SEMPURNA!
+BoxDesc.Size = UDim2.new(1, -129, 0, 42) 
+BoxDesc.Position = UDim2.new(0, 48, 0, 26) 
 BoxDesc.BackgroundTransparency = 1
 BoxDesc.TextColor3 = ColorDesc
 BoxDesc.Font = FontDesc
@@ -1783,9 +1796,9 @@ BoxDesc.TextYAlignment = Enum.TextYAlignment.Top
 BoxDesc.TextWrapped = true
 RegisterTranslation(BoxDesc, "Text", "Box_D")
 
-BoxFrame.ClipsDescendants = true -- OBAT MUTLAK BIAR BAYANGAN KOTAK SEPELE IKUT TUMPUL MANJA!
+BoxFrame.ClipsDescendants = true 
 
--- TOGGLE BUTTON BOX ESP 
+
 local BoxBtn = Instance.new("TextButton", BoxFrame)
 BoxBtn.Size = UDim2.new(0, 38, 0, 18)
 BoxBtn.Position = UDim2.new(1, -85, 0.5, -9)
@@ -1803,7 +1816,7 @@ BoxInd.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 BoxInd.ZIndex = 100
 Instance.new("UICorner", BoxInd).CornerRadius = UDim.new(1, 0)
 
--- ICON DROPDOWN LEMAH LEMBUT MANJA
+
 local DropBtn = Instance.new("TextButton", BoxFrame)
 DropBtn.Size = UDim2.new(0, 30, 0, 30)
 DropBtn.Position = UDim2.new(1, -40, 0.5, -15)
@@ -1821,7 +1834,7 @@ DropIcon.Image = "rbxthumb://type=Asset&id=5279719076&w=150&h=150"
 DropIcon.ImageColor3 = ColorDesc
 DropIcon.ZIndex = 100
 
--- FRAME COLOR PICKER
+
 local CP_Frame = Instance.new("Frame", P2)
 CP_Frame.Size = UDim2.new(1, -4, 0, 0) 
 CP_Frame.BackgroundColor3 = ColorMain
@@ -1831,13 +1844,13 @@ CP_Frame.Visible = false
 CP_Frame.ZIndex = 5 
 Instance.new("UICorner", CP_Frame).CornerRadius = UDim.new(0, 8)
 
--- ==========================================================
--- ICON CUSTOM COLOR ESP & TEKS (SEJAJAR MUTLAK)
--- ==========================================================
+
+
+
 local CP_Icon = Instance.new("ImageLabel", CP_Frame)
 CP_Icon.Size = UDim2.new(0, 18, 0, 18)
 CP_Icon.AnchorPoint = Vector2.new(0, 0.5)
-CP_Icon.Position = UDim2.new(0, 12, 0, 24) -- TENGAH MUTLAK SEJAJAR SAMA ICON LAIN!
+CP_Icon.Position = UDim2.new(0, 12, 0, 24) 
 CP_Icon.BackgroundTransparency = 1
 CP_Icon.Image = "rbxthumb://type=Asset&id=111189222786853&w=150&h=150"
 CP_Icon.ImageColor3 = ColPink 
@@ -1845,7 +1858,7 @@ CP_Icon.ImageColor3 = ColPink
 local CP_Title = Instance.new("TextLabel", CP_Frame)
 CP_Title.Size = UDim2.new(1, -60, 0, 16)
 CP_Title.AnchorPoint = Vector2.new(0, 0.5)
-CP_Title.Position = UDim2.new(0, 48, 0, 24) -- SEJAJAR RAPIH KE KANAN!
+CP_Title.Position = UDim2.new(0, 48, 0, 24) 
 CP_Title.BackgroundTransparency = 1
 CP_Title.Text = "Custom Color Box ESP"
 CP_Title.TextColor3 = ColorDesc
@@ -1855,7 +1868,7 @@ CP_Title.TextXAlignment = Enum.TextXAlignment.Left
 
 local CP_Btn = Instance.new("TextButton", CP_Frame)
 CP_Btn.Size = UDim2.new(0, 38, 0, 18)
-CP_Btn.Position = UDim2.new(1, -85, 0, 15) -- SEJAJAR MUTLAK SAMA TOGGLE BOX ESP!
+CP_Btn.Position = UDim2.new(1, -85, 0, 15) 
 CP_Btn.BackgroundColor3 = ColorToggleOff
 CP_Btn.Text = ""
 Instance.new("UICorner", CP_Btn).CornerRadius = UDim.new(1, 0)
@@ -1916,7 +1929,7 @@ CS_Stroke.Color = Color3.fromRGB(255, 255, 255)
 CS_Stroke.Thickness = 1.5
 CS_Stroke.Transparency = 0.8
 
--- HEX CONTAINER REVAMP
+
 local HexContainer = Instance.new("Frame", ColorShow)
 HexContainer.Size = UDim2.new(1, 0, 0, 22)
 HexContainer.Position = UDim2.new(0, 0, 0, 4)
@@ -1950,7 +1963,7 @@ CopyIcon.BackgroundTransparency = 1
 CopyIcon.Image = "rbxthumb://type=Asset&id=139712002348440&w=150&h=150"
 CopyIcon.ImageColor3 = Color3.fromRGB(255, 255, 255)
 
--- LOGIKA RGB ANIMASI (Soft Spoken)
+
 RunService.RenderStepped:Connect(function()
     if DropIcon and DropIcon.Parent then
         DropIcon.ImageColor3 = Color3.fromHSV((tick() * 0.15) % 1, 0.9, 1) 
@@ -1972,10 +1985,10 @@ local cpActive = false
 local dropOpen = false
 local draggingWheel, draggingVal = false, false
 
--- ==========================================================
--- NOTIFIKASI MERAH ANTI-SPAM (CERAH & LEBIH TUMPUL)
--- ==========================================================
-local ActiveRedNotif = nil -- Variabel penjaga biar ga numpuk!
+
+
+
+local ActiveRedNotif = nil 
 
 local function SendRedNotif()
     if ActiveRedNotif and ActiveRedNotif.Parent then
@@ -1989,12 +2002,12 @@ local function SendRedNotif()
     NotifFrame.Size = UDim2.new(0, 280, 0, 70)
     NotifFrame.AnchorPoint = Vector2.new(1, 1)
     NotifFrame.Position = UDim2.new(1, 300, 1, -20)
-    NotifFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 18) -- Solid gelap bersih, bukan transparan dekil
-    NotifFrame.BackgroundTransparency = 0.05 -- Transparan tipis banget biar warna teks tetep terang
+    NotifFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 18) 
+    NotifFrame.BackgroundTransparency = 0.05 
     NotifFrame.ZIndex = 9999
-    Instance.new("UICorner", NotifFrame).CornerRadius = UDim.new(0, 16) -- FIX: JAUH LEBIH TUMPUL (DARI 8 JADI 16)
+    Instance.new("UICorner", NotifFrame).CornerRadius = UDim.new(0, 16) 
     
-    ActiveRedNotif = NotifFrame -- Set jadi aktif!
+    ActiveRedNotif = NotifFrame 
     
     local NotifStroke = Instance.new("UIStroke", NotifFrame)
     NotifStroke.Color = Color3.fromRGB(255, 50, 50) 
@@ -2018,7 +2031,7 @@ local function SendRedNotif()
     NTitle.TextSize = 14
     NTitle.TextXAlignment = Enum.TextXAlignment.Left
     NTitle.ZIndex = 10000 
-    RegisterTranslation(NTitle, "Text", "NotifRed_T") -- FIX MUTLAK BAHASA!
+    RegisterTranslation(NTitle, "Text", "NotifRed_T") 
     
     local NDesc = Instance.new("TextLabel", NotifFrame)
     NDesc.Size = UDim2.new(1, -60, 0, 30)
@@ -2031,14 +2044,14 @@ local function SendRedNotif()
     NDesc.TextYAlignment = Enum.TextYAlignment.Top
     NDesc.TextWrapped = true
     NDesc.ZIndex = 10000 
-    RegisterTranslation(NDesc, "Text", "NotifRed_D") -- FIX MUTLAK BAHASA!
+    RegisterTranslation(NDesc, "Text", "NotifRed_D") 
  
     Tween(NotifFrame, {Position = UDim2.new(1, -20, 1, -20)}, 0.5)
     task.delay(4, function()
         local hideTw = Tween(NotifFrame, {Position = UDim2.new(1, 300, 1, -20), BackgroundTransparency = 1}, 0.5)
         hideTw.Completed:Connect(function() 
             NotifFrame:Destroy() 
-            ActiveRedNotif = nil -- Kosongin lagi pas udah ilang
+            ActiveRedNotif = nil 
         end)
     end)
 end
@@ -2048,7 +2061,7 @@ DropBtn.MouseButton1Click:Connect(function()
     if dropOpen then
         Spacer.Visible = true
         CP_Frame.Visible = true
-        Tween(CP_Frame, {Size = UDim2.new(1, -4, 0, 160)}, 0.4) -- UKURAN FRAME 160 BIAR LEGA GA DEMPETAN
+        Tween(CP_Frame, {Size = UDim2.new(1, -4, 0, 160)}, 0.4) 
         Tween(DropIcon, {Rotation = -180}, 0.4) 
     else
         Tween(DropIcon, {Rotation = 0}, 0.4)
@@ -2129,7 +2142,7 @@ end
 
 BoxBtn.MouseButton1Click:Connect(function()
     ESP_Box = not ESP_Box
-    Tween(BoxBtn, {BackgroundColor3 = ESP_Box and ColPink or ColorToggleOff}, 0.25) -- SEKARANG COL-PINK (WARNA PENTING) WOY, BUKAN PUTIH LAGI!
+    Tween(BoxBtn, {BackgroundColor3 = ESP_Box and ColPink or ColorToggleOff}, 0.25) 
     Tween(BoxInd, {Position = ESP_Box and UDim2.new(1, -16, 0.5, -7) or UDim2.new(0, 2, 0.5, -7)}, 0.25)
     for p, data in pairs(Highlights) do
         if data.Highlight then data.Highlight:Destroy() end
@@ -2209,9 +2222,9 @@ local function GetRainbowText(text, offset)
     return res
 end
 
--- =========================================================================
--- RENDER ESP HIGHLIGHT MUTLAK! 
--- =========================================================================
+
+
+
 local function UpdateHighlightESP()
     for _, p in pairs(Players:GetPlayers()) do
         if p ~= LocalPlayer then
@@ -2227,8 +2240,8 @@ local function UpdateHighlightESP()
                 if not Highlights[p] then
                     local hl = Instance.new("Highlight", ESPFolder)
                     hl.Name = p.Name .. "_ESP"
-                    hl.FillTransparency = 1 -- FIX: Dalamnya bolong mutlak, cuma garis outline!
-                    hl.OutlineTransparency = 0 -- FIX: Pinggirannya nyala!
+                    hl.FillTransparency = 1 
+                    hl.OutlineTransparency = 0 
                     hl.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
                     
                     local txtGui = Instance.new("BillboardGui", ESPFolder)
@@ -2254,20 +2267,20 @@ local function UpdateHighlightESP()
                 espData.Highlight.Adornee = char
                 espData.Bill.Adornee = char:FindFirstChild("Head") or char:FindFirstChild("HumanoidRootPart")
                 
-                -- Logika ESP Highlight (Siluet Nempel Badan)
+                
                 if ESP_Box then
                     espData.Highlight.Enabled = true
                     if cpActive then
                         espData.Highlight.OutlineColor = ESP_Box_Color
                     else
-                        -- Efek RGB Neon gerak manja kalau custom color mati
+                        
                         espData.Highlight.OutlineColor = Color3.fromHSV((tick() * 0.5) % 1, 1, 1)
                     end
                 else
                     espData.Highlight.Enabled = false
                 end
                 
-                -- Logika Text ESP (Nama & Darah)
+                
                 local hrp = char:FindFirstChild("HumanoidRootPart")
                 local hum = char:FindFirstChild("Humanoid")
                 local dist = (Camera.CFrame.Position - hrp.Position).Magnitude
@@ -2292,7 +2305,7 @@ local function UpdateHighlightESP()
                 espData.Text.Text = finalTxt
                 espData.Bill.Enabled = (ESP_NameDist or ESP_Health)
             else
-                -- Sembunyiin kalau mati / belum spawn biar ga bug
+                
                 if Highlights[p] then
                     Highlights[p].Highlight.Enabled = false
                     Highlights[p].Bill.Enabled = false
@@ -2306,13 +2319,13 @@ RunService.RenderStepped:Connect(function(dt)
     hueOffset = (hueOffset + dt * 0.4) % 1
     UpdateHighlightESP()
     
-    -- 🔥 CURI RGB DARI FITUR NAME ESP BUAT ICON "NAME ESP" & "BOX ESP"!
-    -- Ini pake rumus Name ESP lu: (tick() * 0.5) % 1
+    
+    
     local rgbNyuri = Color3.fromHSV((tick() * 0.5) % 1, 1, 1)
     
     for _, obj in pairs(P2:GetDescendants()) do
         if obj:IsA("ImageLabel") then
-            -- Deteksi icon mata Naruto & icon Box ESP secara otomatis!
+            
             if obj.Image == "rbxthumb://type=Asset&id=5219208999&w=150&h=150" or obj.Image == "rbxthumb://type=Asset&id=112499571301742&w=150&h=150" then
                 obj.ImageColor3 = rgbNyuri
             end
@@ -2335,30 +2348,30 @@ CreateToggle(P3, "rbxthumb://type=Asset&id=16833255787&w=150&h=150", ColGrey, Co
     if s then Lighting.Ambient = Color3.new(1, 1, 1); Lighting.OutdoorAmbient = Color3.new(1, 1, 1) else Lighting.Ambient = oAmb; Lighting.OutdoorAmbient = oOut end
 end)
 
--- ==========================================================
--- 🔥 FITUR ANTI-AFK PREMIUM (ICON GEDE SEBARIS & TRANSISI LEMAH LEMBUT!)
--- ==========================================================
+
+
+
 local AFK_Frame = Instance.new("Frame", P4)
 AFK_Frame.Size = UDim2.new(1, -4, 0, 75)
 AFK_Frame.BackgroundColor3 = ColorMain
 AFK_Frame.BackgroundTransparency = 0.5
 Instance.new("UICorner", AFK_Frame).CornerRadius = UDim.new(0, 8)
 
--- ICON OFF (MERAH)
+
 local AFK_IconOff = Instance.new("ImageLabel", AFK_Frame)
-AFK_IconOff.Size = UDim2.new(0, 40, 0, 40) -- 🔥 GEDE LEGA SEKURAN JUDUL SAMPE KETERANGAN!
-AFK_IconOff.Position = UDim2.new(0, 10, 0.5, -20) -- TETEP DI POSISI BIASA (KIRI)
+AFK_IconOff.Size = UDim2.new(0, 40, 0, 40) 
+AFK_IconOff.Position = UDim2.new(0, 10, 0.5, -20) 
 AFK_IconOff.BackgroundTransparency = 1
 AFK_IconOff.Image = "rbxthumb://type=Asset&id=96165359287667&w=150&h=150"
 AFK_IconOff.ZIndex = 1
 
--- ICON ON (HIJAU PREMIUM) DITUMPUK DI ATASNYA!
+
 local AFK_IconOn = Instance.new("ImageLabel", AFK_Frame)
 AFK_IconOn.Size = UDim2.new(0, 40, 0, 40) 
 AFK_IconOn.Position = UDim2.new(0, 10, 0.5, -20)
 AFK_IconOn.BackgroundTransparency = 1
 AFK_IconOn.Image = "rbxthumb://type=Asset&id=93330283163178&w=150&h=150"
-AFK_IconOn.ImageTransparency = 1 -- Awalnya transparan/hilang
+AFK_IconOn.ImageTransparency = 1 
 AFK_IconOn.ZIndex = 2
 
 local AFK_Title = Instance.new("TextLabel", AFK_Frame)
@@ -2401,13 +2414,13 @@ AFK_Btn.MouseButton1Click:Connect(function()
     _G.AntiAFK = not _G.AntiAFK
     local state = _G.AntiAFK
     
-    -- 🔥 TRANSISI SOFT SPOKEN, MEMANJAKAN MATA, NGEJRENGG LEMAH LEMBUT!
+    
     local tweenInfo = TweenInfo.new(0.4, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut)
     
     TweenService:Create(AFK_Btn, tweenInfo, {BackgroundColor3 = state and Color3.fromRGB(50, 255, 100) or ColorToggleOff}):Play()
     TweenService:Create(AFK_Ind, tweenInfo, {Position = state and UDim2.new(1, -16, 0.5, -7) or UDim2.new(0, 2, 0.5, -7)}):Play()
     
-    -- Crossfade animasi ganti icon!
+    
     TweenService:Create(AFK_IconOn, tweenInfo, {ImageTransparency = state and 0 or 1}):Play()
     TweenService:Create(AFK_IconOff, tweenInfo, {ImageTransparency = state and 1 or 0}):Play()
 end)
@@ -2419,22 +2432,22 @@ LocalPlayer.Idled:Connect(function()
     end 
 end)
 
--- 🗿 ICON PUTIH MURNI & KOPONG!
+
 local lPing = CreateInfo(P4, "rbxthumb://type=Asset&id=82571483730620&w=150&h=150", Color3.fromRGB(255, 255, 255), "Ping", "0 ms")
 local lFps = CreateInfo(P4, "rbxthumb://type=Asset&id=134742030444605&w=150&h=150", Color3.fromRGB(255, 255, 255), "FPS", "0 FPS")
 local lTime = CreateInfo(P4, "rbxthumb://type=Asset&id=17551409714&w=150&h=150", Color3.fromRGB(255, 255, 255), "Clock", "00:00:00")
 
--- SISTEM FPS MUTLAK (Hitung Frame Asli, Bukan Physics Game)
+
 local frames = 0
 RunService.RenderStepped:Connect(function()
     frames = frames + 1
 end)
 
--- 🔥 FUNGSI FPS, PING, JAM GW BIKIN KOPONG TOTAL SESUAI PERINTAH LU BRAY
+
 task.spawn(function()
     while task.wait(1) do
         if not ScreenGui.Parent then break end 
-        -- KOSONG MELOMPONG BRAY!
+        
     end
 end)
 
@@ -2449,7 +2462,7 @@ LangImg.Size = UDim2.new(0, 24, 0, 24)
 LangImg.AnchorPoint = Vector2.new(0, 0.5)
 LangImg.Position = UDim2.new(0, 12, 0.5, 0) 
 LangImg.BackgroundTransparency = 1
-LangImg.Image = "rbxthumb://type=Asset&id=137384997162705&w=150&h=150" -- ICON DEFAULT INDO BOS!
+LangImg.Image = "rbxthumb://type=Asset&id=137384997162705&w=150&h=150" 
 LangImg.ImageColor3 = Color3.fromRGB(255, 255, 255)
 
 local LangShine = Instance.new("ImageLabel", LangImg)
@@ -2474,7 +2487,7 @@ end)
 
 local LangTitle = Instance.new("TextLabel", DropFrame)
 LangTitle.Size = UDim2.new(0.7, 0, 0, 16)
-LangTitle.Position = UDim2.new(0, 48, 0, 10) -- NAIK SEUPIL BIAR PERFECT!
+LangTitle.Position = UDim2.new(0, 48, 0, 10) 
 LangTitle.BackgroundTransparency = 1
 LangTitle.TextColor3 = ColorText
 LangTitle.Font = FontMain
@@ -2484,7 +2497,7 @@ RegisterTranslation(LangTitle, "Text", "Lang_T")
 
 local LangDesc = Instance.new("TextLabel", DropFrame)
 LangDesc.Size = UDim2.new(1, -90, 0, 42) 
-LangDesc.Position = UDim2.new(0, 48, 0, 24) -- SEJAJAR TENGAH SAMA JUDUL!
+LangDesc.Position = UDim2.new(0, 48, 0, 24) 
 LangDesc.BackgroundTransparency = 1
 LangDesc.TextColor3 = ColorDesc
 LangDesc.Font = FontDesc
@@ -2529,7 +2542,7 @@ Instance.new("UICorner", LangScroll).CornerRadius = UDim.new(0, 8)
 local LLayout = Instance.new("UIListLayout", LangScroll)
 LLayout.Padding = UDim.new(0, 2)
 
--- LOGIKA BUKA TUTUP DROPDOWN & AUTO-SCROLL MANJA
+
 local langOpen = false
 LangDropBtn.MouseButton1Click:Connect(function()
     langOpen = not langOpen
@@ -2540,9 +2553,9 @@ LangDropBtn.MouseButton1Click:Connect(function()
             if l == ActiveLanguage then selectedIndex = i; break end
         end
         
-        -- KARENA SEKARANG ITEMNYA GEDE (65px), KITA KALIIN 65!
+        
         LangScroll.CanvasPosition = Vector2.new(0, (selectedIndex - 1) * 65)
-        Tween(LangScroll, {Size = UDim2.new(1, -4, 0, 205)}, 0.35) -- TINGGI 205 BIAR PAS 3 ITEM LEGA!
+        Tween(LangScroll, {Size = UDim2.new(1, -4, 0, 205)}, 0.35) 
     else
         Tween(LangScroll, {Size = UDim2.new(1, -4, 0, 0)}, 0.35).Completed:Connect(function()
             if not langOpen then LangScroll.Visible = false end
@@ -2553,7 +2566,7 @@ end)
 
 local function UpdateLanguageSystem(lang)
     ActiveLanguage = lang
-    local useUniversal = (lang == "\u{4e2d}\u{6587} (Zh\u{014d}ngwén)" or lang == "\u{0627}\u{0644}\u{0639}\u{0631}\u{0628}\u{064a}\u{0629} (Al-'Arabiyyah)" or lang == "\u{0420}\u{0443}\u{0441}\u{0441}\u{043a}\u{0438}\u{0439} (Russkiy)" or lang == "\u{0939}\u{093f}\u{0928}\u{094d}\u{0926}\u{0940} (Hind\u{012b})")
+    local useUniversal = (lang == "\u{4e2d}\u{6587} (Zh\u{014d}ngw├йn)" or lang == "\u{0627}\u{0644}\u{0639}\u{0631}\u{0628}\u{064a}\u{0629} (Al-'Arabiyyah)" or lang == "\u{0420}\u{0443}\u{0441}\u{0441}\u{043a}\u{0438}\u{0439} (Russkiy)" or lang == "\u{0939}\u{093f}\u{0928}\u{094d}\u{0926}\u{0940} (Hind\u{012b})")
     
     for _, item in pairs(TranslationElements) do
         if item.Element and item.Element.Parent then
@@ -2565,39 +2578,39 @@ local function UpdateLanguageSystem(lang)
     end
 end
 
--- KUMPULAN DESKRIPSI PREMIUM UNTUK TIAP BAHASA (TEGAS & MUDAH DIPAHAMI)
+
 local LangDescs = {
     ["Indonesia (Default)"] = "Gunakan bahasa Indonesia untuk antarmuka. Semua fitur dan instruksi akan diterjemahkan dengan sangat akurat dan tegas.",
     ["English"] = "Set the interface to English. All features and instructions will be translated for a seamless and premium experience.",
-    ["Português"] = "Defina a interface para Português. Todos os recursos e instruções serão traduzidos para uma experiência premium e clara.",
-    ["\u{4e2d}\u{6587} (Zh\u{014d}ngwén)"] = "将界面设置为中文。所有功能和说明都将被翻译，为您提供无缝、优质且非常清晰的体验。",
-    ["Español"] = "Configura la interfaz en Español. Todas las funciones e instrucciones se traducirán para una experiencia fluida y muy premium.",
-    ["\u{0627}\u{0644}\u{0639}\u{0631}\u{0628}\u{064a}\u{0629} (Al-'Arabiyyah)"] = "قم بتعيين الواجهة إلى اللغة العربية. سيتم ترجمة جميع الميزات والتعليمات لتجربة سلسة وواضحة جدا وحازمة.",
-    ["Français"] = "Définissez l'interface en Français. Toutes les fonctionnalités et instructions seront traduites de manière précise et élégante.",
-    ["\u{0420}\u{0443}\u{0441}\u{0441}\u{043a}\u{0438}\u{0439} (Russkiy)"] = "Установите русский язык. Все функции и инструкции будут переведены для обеспечения бесперебойной и понятной работы.",
-    ["\u{0939}\u{093f}\u{0928}\u{094d}\u{0926}\u{0940} (Hind\u{012b})"] = "इंटरफ़ेस को हिंदी में सेट करें। एक सहज और प्रीमियम अनुभव के लिए सभी सुविधाओं और निर्देशों का अनुवाद किया जाएगा।",
-    ["Deutsch"] = "Stelle die Benutzeroberfläche auf Deutsch ein. Alle Funktionen und Anweisungen werden für ein nahtloses Erlebnis übersetzt."
+    ["Portugu├кs"] = "Defina a interface para Portugu├кs. Todos os recursos e instru├з├╡es ser├гo traduzidos para uma experi├кncia premium e clara.",
+    ["\u{4e2d}\u{6587} (Zh\u{014d}ngw├йn)"] = "х░ЖчХМщЭвшо╛ч╜оф╕║ф╕нцЦЗуАВцЙАцЬЙхКЯшГ╜хТМшп┤цШОщГ╜х░Жшвлч┐╗шпСя╝Мф╕║цВицПРф╛ЫцЧач╝ЭуАБф╝Шш┤иф╕ФщЭЮх╕╕ц╕ЕцЩ░чЪДф╜УщкМуАВ",
+    ["Espa├▒ol"] = "Configura la interfaz en Espa├▒ol. Todas las funciones e instrucciones se traducir├бn para una experiencia fluida y muy premium.",
+    ["\u{0627}\u{0644}\u{0639}\u{0631}\u{0628}\u{064a}\u{0629} (Al-'Arabiyyah)"] = "┘В┘Е ╪и╪к╪╣┘К┘К┘Ж ╪з┘Д┘И╪з╪м┘З╪й ╪е┘Д┘Й ╪з┘Д┘Д╪║╪й ╪з┘Д╪╣╪▒╪и┘К╪й. ╪│┘К╪к┘Е ╪к╪▒╪м┘Е╪й ╪м┘Е┘К╪╣ ╪з┘Д┘Е┘К╪▓╪з╪к ┘И╪з┘Д╪к╪╣┘Д┘К┘Е╪з╪к ┘Д╪к╪м╪▒╪и╪й ╪│┘Д╪│╪й ┘И┘И╪з╪╢╪н╪й ╪м╪п╪з ┘И╪н╪з╪▓┘Е╪й.",
+    ["Fran├зais"] = "D├йfinissez l'interface en Fran├зais. Toutes les fonctionnalit├йs et instructions seront traduites de mani├иre pr├йcise et ├йl├йgante.",
+    ["\u{0420}\u{0443}\u{0441}\u{0441}\u{043a}\u{0438}\u{0439} (Russkiy)"] = "╨г╤Б╤В╨░╨╜╨╛╨▓╨╕╤В╨╡ ╤А╤Г╤Б╤Б╨║╨╕╨╣ ╤П╨╖╤Л╨║. ╨Т╤Б╨╡ ╤Д╤Г╨╜╨║╤Ж╨╕╨╕ ╨╕ ╨╕╨╜╤Б╤В╤А╤Г╨║╤Ж╨╕╨╕ ╨▒╤Г╨┤╤Г╤В ╨┐╨╡╤А╨╡╨▓╨╡╨┤╨╡╨╜╤Л ╨┤╨╗╤П ╨╛╨▒╨╡╤Б╨┐╨╡╤З╨╡╨╜╨╕╤П ╨▒╨╡╤Б╨┐╨╡╤А╨╡╨▒╨╛╨╣╨╜╨╛╨╣ ╨╕ ╨┐╨╛╨╜╤П╤В╨╜╨╛╨╣ ╤А╨░╨▒╨╛╤В╤Л.",
+    ["\u{0939}\u{093f}\u{0928}\u{094d}\u{0926}\u{0940} (Hind\u{012b})"] = "рдЗрдВрдЯрд░рдлрд╝реЗрд╕ рдХреЛ рд╣рд┐рдВрджреА рдореЗрдВ рд╕реЗрдЯ рдХрд░реЗрдВред рдПрдХ рд╕рд╣рдЬ рдФрд░ рдкреНрд░реАрдорд┐рдпрдо рдЕрдиреБрднрд╡ рдХреЗ рд▓рд┐рдП рд╕рднреА рд╕реБрд╡рд┐рдзрд╛рдУрдВ рдФрд░ рдирд┐рд░реНрджреЗрд╢реЛрдВ рдХрд╛ рдЕрдиреБрд╡рд╛рдж рдХрд┐рдпрд╛ рдЬрд╛рдПрдЧрд╛ред",
+    ["Deutsch"] = "Stelle die Benutzeroberfl├дche auf Deutsch ein. Alle Funktionen und Anweisungen werden f├╝r ein nahtloses Erlebnis ├╝bersetzt."
 }
 
 for _, lang in ipairs(LangList) do
     local bContainer = Instance.new("Frame", LangScroll)
-    bContainer.Size = UDim2.new(1, 0, 0, 65) -- TINGGI LEGA PREMIUM (SAMA KAYAK FITUR!)
+    bContainer.Size = UDim2.new(1, 0, 0, 65) 
     bContainer.BackgroundTransparency = 1
     
     local b = Instance.new("TextButton", bContainer)
     b.Size = UDim2.new(1, -12, 1, -4) 
     b.Position = UDim2.new(0, 6, 0, 2)
     b.BackgroundColor3 = Color3.fromRGB(20, 20, 25) 
-    b.BackgroundTransparency = 0.7 -- MUTLAK LEBIH TRANSPARAN BIAR PREMIUM STYLE
+    b.BackgroundTransparency = 0.7 
     b.Text = ""
     b.AutoButtonColor = false
-    Instance.new("UICorner", b).CornerRadius = UDim.new(0, 8) -- TUMPUL MANJA
+    Instance.new("UICorner", b).CornerRadius = UDim.new(0, 8) 
     
     b.MouseEnter:Connect(function() Tween(b, {BackgroundColor3 = ColorToggleOff, BackgroundTransparency = 0.3}, 0.25) end)
     b.MouseLeave:Connect(function() Tween(b, {BackgroundColor3 = Color3.fromRGB(20, 20, 25), BackgroundTransparency = 0.7}, 0.25) end)  
     
     local flagIcon = Instance.new("ImageLabel", b)
-    flagIcon.Size = UDim2.new(0, 24, 0, 24) -- SEUKURAN ICON FITUR!
+    flagIcon.Size = UDim2.new(0, 24, 0, 24) 
     flagIcon.AnchorPoint = Vector2.new(0, 0.5)
     flagIcon.Position = UDim2.new(0, 12, 0.5, 0) 
     flagIcon.BackgroundTransparency = 1
@@ -2606,17 +2619,17 @@ for _, lang in ipairs(LangList) do
     
     local lTitle = Instance.new("TextLabel", b)
     lTitle.Size = UDim2.new(1, -54, 0, 16)
-    lTitle.Position = UDim2.new(0, 48, 0, 8) -- RAPIH MUTLAK, GA NABRAK BENDERA!
+    lTitle.Position = UDim2.new(0, 48, 0, 8) 
     lTitle.BackgroundTransparency = 1
     lTitle.TextColor3 = ColorText
-    lTitle.Font = (lang == "\u{4e2d}\u{6587} (Zh\u{014d}ngwén)" or lang == "\u{0627}\u{0644}\u{0639}\u{0631}\u{0628}\u{064a}\u{0629} (Al-'Arabiyyah)" or lang == "\u{0420}\u{0443}\u{0441}\u{0441}\u{043a}\u{0438}\u{0439} (Russkiy)" or lang == "\u{0939}\u{093f}\u{0928}\u{094d}\u{0926}\u{0940} (Hind\u{012b})") and FontUniversal or FontMain
+    lTitle.Font = (lang == "\u{4e2d}\u{6587} (Zh\u{014d}ngw├йn)" or lang == "\u{0627}\u{0644}\u{0639}\u{0631}\u{0628}\u{064a}\u{0629} (Al-'Arabiyyah)" or lang == "\u{0420}\u{0443}\u{0441}\u{0441}\u{043a}\u{0438}\u{0439} (Russkiy)" or lang == "\u{0939}\u{093f}\u{0928}\u{094d}\u{0926}\u{0940} (Hind\u{012b})") and FontUniversal or FontMain
     lTitle.TextSize = 12
     lTitle.TextXAlignment = Enum.TextXAlignment.Left
     lTitle.Text = lang
 
     local lDesc = Instance.new("TextLabel", b)
     lDesc.Size = UDim2.new(1, -54, 0, 40)
-    lDesc.Position = UDim2.new(0, 48, 0, 24) -- PAS DITENGAH KEK FITUR ASLI!
+    lDesc.Position = UDim2.new(0, 48, 0, 24) 
     lDesc.BackgroundTransparency = 1
     lDesc.TextColor3 = ColorDesc
     lDesc.Font = FontDesc
@@ -2624,7 +2637,7 @@ for _, lang in ipairs(LangList) do
     lDesc.TextXAlignment = Enum.TextXAlignment.Left
     lDesc.TextYAlignment = Enum.TextYAlignment.Top
     lDesc.TextWrapped = true
-    lDesc.Text = LangDescs[lang] -- DESKRIPSI SPESIFIK BAHASA!
+    lDesc.Text = LangDescs[lang] 
     
     b.MouseButton1Click:Connect(function()
         langOpen = false
